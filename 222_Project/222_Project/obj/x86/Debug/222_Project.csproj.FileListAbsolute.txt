@@ -3,3 +3,8 @@
 /Users/michaelkowal/Projects/222_Project/222_Project/obj/x86/Debug/222_Project.csproj.CoreCompileInputs.cache
 /Users/michaelkowal/Projects/222_Project/222_Project/obj/x86/Debug/222_Project.exe
 /Users/michaelkowal/Projects/222_Project/222_Project/obj/x86/Debug/222_Project.pdb
+/Users/michaelkowal/Documents/Winter 2018/CPSC 222/Project/222Project/222_Project/222_Project/bin/Debug/222_Project.exe
+/Users/michaelkowal/Documents/Winter 2018/CPSC 222/Project/222Project/222_Project/222_Project/bin/Debug/222_Project.pdb
+/Users/michaelkowal/Documents/Winter 2018/CPSC 222/Project/222Project/222_Project/222_Project/obj/x86/Debug/222_Project.csproj.CoreCompileInputs.cache
+/Users/michaelkowal/Documents/Winter 2018/CPSC 222/Project/222Project/222_Project/222_Project/obj/x86/Debug/222_Project.exe
+/Users/michaelkowal/Documents/Winter 2018/CPSC 222/Project/222Project/222_Project/222_Project/obj/x86/Debug/222_Project.pdb
