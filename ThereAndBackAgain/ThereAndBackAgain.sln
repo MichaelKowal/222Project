@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThereAndBackAgain", "Assembly-CSharp.csproj", "{7EA0E3C2-12D9-E617-78A7-B34C08C54105}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7EA0E3C2-12D9-E617-78A7-B34C08C54105}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EA0E3C2-12D9-E617-78A7-B34C08C54105}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EA0E3C2-12D9-E617-78A7-B34C08C54105}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EA0E3C2-12D9-E617-78A7-B34C08C54105}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
