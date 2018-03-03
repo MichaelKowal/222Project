@@ -15,14 +15,14 @@ public class BoardManager : Singleton<BoardManager>
 	[SerializeField]
 	private int rows = 10;
 
-	/*[SerializeField]
-	private CameraMove cameraMovement;*/
+	[SerializeField]
+	private CameraMove cameraMovement;
 
 	[SerializeField]
 	private Transform boardParent;
 
 	public Dictionary<GridPoint, Tile> Tiles { get; set; }
-	//private List<Vector2> gridPositions = new List<Vector2>();*/
+	private List<Vector2> gridPositions = new List<Vector2>();
 	public GameObject  floorTile;
 	public GameObject  wallTile;
 	public GameObject  outerWallTile;
@@ -33,18 +33,18 @@ public class BoardManager : Singleton<BoardManager>
 	}
 
 	//Don't see a reason for this. positions can be inferred from row and column number or by looking at tiles
-	void InitializeList() {/*
+	void InitializeList() {
 		gridPositions.Clear ();
 
 		for(int x=0; x < columns-1; x++) {
 			for(int y=0; y < rows-1; y++) {
 				gridPositions.Add(new Vector3(x,y));
 			}
-		}*/
+		}
 	}
 
 	// creates grid (including outer walls) in columns top to bottom from left to right
-	void Boardsetup() {/*
+	void Boardsetup() {
 
 		Tiles = new Dictionary<GridPoint, Tile>();
 
@@ -74,7 +74,7 @@ public class BoardManager : Singleton<BoardManager>
 
 		cameraMovement.SetCamLimit(new Vector3(bottomRightTile.x + tileSize, bottomRightTile.y - tileSize));
 		cameraMovement.SetCamLimit(new Vector3(worldStart.x + 1 + tileSize + tileSize * columns, worldStart.y - 1 - tileSize - tileSize * rows));
-	*/
+
 	}
 
 	public void SetupScene(int level) {

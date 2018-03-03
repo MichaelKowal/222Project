@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GridPos : MonoBehaviour {
+public struct GridPoint {
 
 	public int X { get; set; }
 

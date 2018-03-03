@@ -180,8 +180,9 @@
 -define:ENABLE_NATIVE_ARRAY_CHECKS
 -define:UNITY_TEAM_LICENSE
 'Assets/Scripts/BoardManager.cs'
+'Assets/Scripts/CameraMove.cs'
 'Assets/Scripts/GameManager.cs'
-'Assets/Scripts/GridPos.cs'
+'Assets/Scripts/GridPoint.cs'
 'Assets/Scripts/Multithreading.cs'
 'Assets/Scripts/Pathfinding.cs'
 'Assets/Scripts/Singleton.cs'

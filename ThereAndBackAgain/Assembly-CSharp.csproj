@@ -52,8 +52,9 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\BoardManager.cs" />
+     <Compile Include="Assets\Scripts\CameraMove.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
-     <Compile Include="Assets\Scripts\GridPos.cs" />
+     <Compile Include="Assets\Scripts\GridPoint.cs" />
      <Compile Include="Assets\Scripts\Multithreading.cs" />
      <Compile Include="Assets\Scripts\Pathfinding.cs" />
      <Compile Include="Assets\Scripts\Singleton.cs" />
