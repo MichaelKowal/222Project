@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : Singleton<GameManager> {
+
+	private BoardManager boardScript;
+
+	private int level = 1;
+
+	void Awake() {
+		boardScript = GetComponent<BoardManager>();
+		InitGame ();
+	}
 
 	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+	void InitGame() {
+		boardScript.SetupScene (level);
+
 	}
 }
