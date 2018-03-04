@@ -15,6 +15,7 @@ public class BoardManager : Singleton<BoardManager>
 	[SerializeField]
 	private int rows = 10;
 
+	//lets you move to off screen sections of map
 	[SerializeField]
 	private CameraMove cameraMovement;
 
@@ -79,7 +80,7 @@ public class BoardManager : Singleton<BoardManager>
 
 	public void SetupScene(int level) {
 		Boardsetup ();
-		//InitializeList ();
+		InitializeList ();
 		//LayoutObjectAtRandom (wallTiles, wallCount.minimum, wallCount.maximum);
 		//Instantiate (exit, new Vector3(columns-1, rows-1, 0f), Quaternion.identity);
 	}
@@ -88,19 +89,5 @@ public class BoardManager : Singleton<BoardManager>
 	void LayoutObjectAtPlace(GameObject placableObject, int x, int y) {
 		Vector2 position = new Vector2 (x, y);
 		Instantiate (placableObject, position, Quaternion.identity);
-	}
-
-	private void SpawnObject()
-	{
-
-	}
-
-	void Start () {
-
-	}
-
-	// Update is called once per frame
-	void Update () {
-
 	}
 }

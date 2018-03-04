@@ -7,6 +7,7 @@ public class Tile : MonoBehaviour {
 
 	public GridPoint GridPos { get; private set; }
 
+	//where the tile is
 	public Vector3 WorldPos
 	{
 		get
@@ -26,6 +27,7 @@ public class Tile : MonoBehaviour {
 
 	}
 
+	//used by board manager to create tiles
 	public void Setup(GridPoint gridPos, Vector3 worldPos, Transform parent)
 	{
 		this.GridPos = gridPos;
