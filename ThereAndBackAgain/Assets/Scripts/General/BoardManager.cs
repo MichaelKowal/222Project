@@ -27,6 +27,7 @@ public class BoardManager : Singleton<BoardManager>
 	public GameObject  floorTile;
 	public GameObject  wallTile;
 	public GameObject  outerWallTile;
+	public GameObject firstRobit;
 
 	public float TileSize
 	{
@@ -53,7 +54,7 @@ public class BoardManager : Singleton<BoardManager>
 		//Some problems with maximizing on play but not in build
 		Vector3 worldStart = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height));
 		// boardHolder = new GameObject ("Board").transform;
-
+		LayoutObjectAtPlace (firstRobit, 0, 0);
 		for(int x=-1; x < columns+1; x++) {
 			for(int y=-1; y < rows+1; y++) {
 				GameObject toInstantiate = floorTile; 
@@ -73,8 +74,8 @@ public class BoardManager : Singleton<BoardManager>
 
 		Vector3 bottomRightTile = Tiles[new GridPoint(columns, rows)].transform.position;
 
-		cameraMovement.SetCamLimit(new Vector3(bottomRightTile.x + tileSize, bottomRightTile.y - tileSize));
-		cameraMovement.SetCamLimit(new Vector3(worldStart.x + 1 + tileSize + tileSize * columns, worldStart.y - 1 - tileSize - tileSize * rows));
+		//cameraMovement.SetCamLimit(new Vector3(bottomRightTile.x + tileSize, bottomRightTile.y - tileSize));
+		//cameraMovement.SetCamLimit(new Vector3(worldStart.x + 1 + tileSize + tileSize * columns, worldStart.y - 1 - tileSize - tileSize * rows));
 
 	}
 

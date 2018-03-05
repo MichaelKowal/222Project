@@ -175,6 +175,12 @@ Prefab:
       propertyPath: columns
       value: 18
       objectReference: {fileID: 0}
+    - target: {fileID: 114484337204331874, guid: b9007655ecd534f359e3aaaa48e4c32d,
+        type: 2}
+      propertyPath: firstRobit
+      value: 
+      objectReference: {fileID: 1405411865965526, guid: 2e3f24acce8494bf6a0a477e01c2597d,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b9007655ecd534f359e3aaaa48e4c32d, type: 2}
   m_IsPrefabParent: 0

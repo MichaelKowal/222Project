@@ -13,9 +13,9 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
+  - Floor
+  - Walls
+  - Robits
   - 
   - 
   - 
@@ -40,4 +40,16 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Board
+    uniqueID: 3368898057
+    locked: 0
+  - name: Floor
+    uniqueID: 2021170297
+    locked: 0
+  - name: Walls
+    uniqueID: 4208376649
+    locked: 0
+  - name: Robit
+    uniqueID: 2342450735
     locked: 0

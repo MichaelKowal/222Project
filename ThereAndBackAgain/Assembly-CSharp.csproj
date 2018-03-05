@@ -56,8 +56,10 @@
      <Compile Include="Assets\Scripts\General\GridPoint.cs" />
      <Compile Include="Assets\Scripts\General\Singleton.cs" />
      <Compile Include="Assets\Scripts\General\Tile.cs" />
+     <Compile Include="Assets\Scripts\RobitStuff\Movement.cs" />
      <Compile Include="Assets\Scripts\RobitStuff\Multithreading.cs" />
      <Compile Include="Assets\Scripts\RobitStuff\Pathfinding.cs" />
+     <Compile Include="Assets\Scripts\RobitStuff\RobitUnit.cs" />
      <Compile Include="Assets\Scripts\Utils\CameraMove.cs" />
  <Reference Include="UnityEngine.UIAutomation">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UIAutomation/UnityEngine.UIAutomation.dll</HintPath>
