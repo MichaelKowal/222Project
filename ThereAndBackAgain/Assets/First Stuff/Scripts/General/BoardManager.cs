@@ -28,6 +28,7 @@ public class BoardManager : Singleton<BoardManager>
 	public GameObject  wallTile;
 	public GameObject  outerWallTile;
 	public GameObject firstRobit;
+	public GridPoint startPoint;
 
 	public float TileSize
 	{
@@ -54,10 +55,14 @@ public class BoardManager : Singleton<BoardManager>
 		//Some problems with maximizing on play but not in build
 		Vector3 worldStart = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height));
 		// boardHolder = new GameObject ("Board").transform;
-		LayoutObjectAtPlace (firstRobit, 0, 0);
+		startPoint.X = (int)(Camera.main.transform.position.x - (columns / 2));
+		startPoint.Y = (int)(Camera.main.transform.position.y - (rows / 2));
+		LayoutObjectAtPlace (firstRobit, startPoint);
 		for(int x=-1; x < columns+1; x++) {
 			for(int y=-1; y < rows+1; y++) {
 				GameObject toInstantiate = floorTile; 
+				if (y % 2 == 0)
+					toInstantiate = wallTile;
 				if (x == -1 || y == -1 || x == columns || y == rows) {
 					toInstantiate = outerWallTile;
 				}
@@ -80,15 +85,15 @@ public class BoardManager : Singleton<BoardManager>
 	}
 
 	public void SetupScene(int level) {
-		Boardsetup ();
 		InitializeList ();
+		Boardsetup ();
 		//LayoutObjectAtRandom (wallTiles, wallCount.minimum, wallCount.maximum);
 		//Instantiate (exit, new Vector3(columns-1, rows-1, 0f), Quaternion.identity);
 	}
 
 
-	void LayoutObjectAtPlace(GameObject placableObject, int x, int y) {
-		Vector2 position = new Vector2 (x, y);
+	void LayoutObjectAtPlace(GameObject placableObject, GridPoint gridPos) {
+		Vector2 position = new Vector2 (gridPos.X + 0.1f, gridPos.Y + 0.5f);
 		Instantiate (placableObject, position, Quaternion.identity);
 	}
 }
