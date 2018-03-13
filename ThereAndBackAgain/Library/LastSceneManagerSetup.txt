@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Other Stuff/Scenes/TestScene.unity
+- path: Assets/Roguelike Stuff/Scenes/Roguelike Scene.unity
   isLoaded: 1
   isActive: 1

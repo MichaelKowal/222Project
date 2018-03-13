@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Enemy
+  - Exit
+  - Food
+  - Wall
   layers:
   - Default
   - TransparentFX
@@ -13,7 +17,7 @@ TagManager:
   - UI
   - 
   - 
-  - Floor
+  - BlockingLayer
   - Walls
   - Robits
   - 
@@ -52,4 +56,7 @@ TagManager:
     locked: 0
   - name: Robit
     uniqueID: 2342450735
+    locked: 0
+  - name: Units
+    uniqueID: 3149271115
     locked: 0
