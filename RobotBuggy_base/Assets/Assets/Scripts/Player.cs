@@ -161,6 +161,7 @@ namespace Completed
 		//It takes a generic parameter T which in the case of Player is a Wall which the player can attack and destroy.
 		protected override void OnCantMove <T> (T component)
 		{
+            /*
 			//Set hitWall to equal the component passed in as a parameter.
 			Wall hitWall = component as Wall;
 			
@@ -169,6 +170,7 @@ namespace Completed
 			
 			//Set the attack trigger of the player's animation controller in order to play the player's attack animation.
 			animator.SetTrigger ("playerChop");
+            */
 		}
 		
 		
