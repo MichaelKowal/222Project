@@ -1,0 +1,1 @@
+MasterSprites_32x32,32,32,34JustBuggiesSheet,32,32,143
