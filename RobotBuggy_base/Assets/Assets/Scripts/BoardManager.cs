@@ -36,6 +36,7 @@ namespace Completed
 		public GameObject[] foodTiles;									//Array of food prefabs.
 		public GameObject[] enemyTiles;									//Array of enemy prefabs.
 		public GameObject[] outerWallTiles;								//Array of outer tile prefabs.
+        public GameObject[] robotClones;
 		
 		private Transform boardHolder;									//A variable to store a reference to the transform of our Board object.
 		private List <Vector3> gridPositions = new List <Vector3> ();	//A list of possible locations to place tiles.
@@ -126,6 +127,14 @@ namespace Completed
 				Instantiate(tileChoice, randomPosition, Quaternion.identity);
 			}
 		}
+
+        public void AddTile()
+        {
+            //Choose a position for randomPosition by getting a random position from our list of available Vector3s stored in gridPosition
+            Vector3 position = new Vector3(0, 0, 0f);
+            //Instantiate tileChoice at the position returned by RandomPosition with no change in rotation
+            Instantiate(robotClones[0], position, Quaternion.identity);
+        }
 		
 		
 		//SetupScene initializes our level and calls the previous functions to lay out the game board

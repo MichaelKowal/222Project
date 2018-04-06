@@ -84,6 +84,7 @@
     <Compile Include="Assets\Assets\Scripts\Loader.cs" />
     <Compile Include="Assets\Assets\Scripts\MovingObject.cs" />
     <Compile Include="Assets\Assets\Scripts\Player.cs" />
+    <Compile Include="Assets\Assets\Scripts\Robot.cs" />
     <Compile Include="Assets\Assets\Scripts\SoundManager.cs" />
     <Compile Include="Assets\Assets\Scripts\Wall.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
