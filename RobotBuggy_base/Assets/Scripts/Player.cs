@@ -1,122 +1,104 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;      //Allows us to use SceneManager
+using System.Collections.Generic;       //allows the use of lists
+using UnityEngine.UI;
 
 namespace Completed
 {
-    //Player inherits from MovingObject, our base class for objects that can move, Enemy also inherits from this.
+    //Robot inherits from MovingObject, our base class for objects that can move, Enemy also inherits from this.
     public class Player : MovingObject
     {
         public float restartLevelDelay = 1f;        //Delay time in seconds to restart level.
-        public int pointsPerFood = 10;              //Number of points to add to player food points when picking up a food object.
-        public int pointsPerSoda = 20;              //Number of points to add to player food points when picking up a soda object.
-        public int wallDamage = 1;                  //How much damage a player does to a wall when chopping it.
+        public int pointsPerFood = 10;              //Number of points to add to Robot food points when picking up a food object.
+        public int pointsPerSoda = 20;              //Number of points to add to Robot food points when picking up a soda object.
+        public int wallDamage = 1;                  //How much damage a Robot does to a wall when chopping it.
         public bool hasKey = false;
-        private int moveDir = 0;
-        private Animator animator;                  //Used to store a reference to the Player's animator component.
-        private int food;                           //Used to store player food points total during level.
+        private Animator animator;                  //Used to store a reference to the Robot's animator component.
+        private bool stuck = false;
+        private List<Directions> directions = new List<Directions>();
+        private Vector2 previosTile;
+        private int counter = -100;
 
-
-        //Start overrides the Start function of MovingObject
         protected override void Start()
         {
-            //Get a component reference to the Player's animator component
             animator = GetComponent<Animator>();
-
-            //Get the current food point total stored in GameManager.instance between levels.
-            food = GameManager.instance.playerFoodPoints;
-
-            //Call the Start function of the MovingObject base class.
             base.Start();
         }
 
 
-        //This function is called when the behaviour becomes disabled or inactive.
         private void OnDisable()
         {
-            //When Player object is disabled, store the current local food total in the GameManager so it can be re-loaded in next level.
-            GameManager.instance.playerFoodPoints = food;
         }
 
 
         private void Update()
         {
-            //If it's not the player's turn, exit the function.
-            if (!GameManager.instance.playersTurn) return;
-
-            int horizontal = 0;     //Used to store the horizontal move direction.
-            int vertical = 0;       //Used to store the vertical move direction.
-
-
-            //Get input from the input manager, round it to an integer and store in horizontal to set x axis move direction
-            //horizontal = (int)(Input.GetAxisRaw("Horizontal"));
-            if(moveDir == 0)
+            counter++;
+            if (counter == 40)
             {
-                horizontal = 1;
-            }
-            else if(moveDir== 1)
-            {
-                vertical = 1;
-            }
-            else if(moveDir == 2)
-            {
-                horizontal = -1;
-            }
-            else if(moveDir == 3)
-            {
-                vertical = -1;
-            }
+                counter = 0;
+                //If it's not the Robot's turn, exit the function.
+                if (!GameManager.instance.playersTurn) return;
 
-            //Get input from the input manager, round it to an integer and store in vertical to set y axis move direction
+                FindDirections();
+                //create a robot for each of the directions available
+                for (int i = 0; i < directions.Count; i++)
+                {
+                    //used to make things more clear
+                    Directions current = directions[i];
+                    //move the active robit to the first available direction
+                    if (i == 0)
+                    {
+                        AttemptMove<Wall>(current.x, current.y);
+                        //create a tile in the spot the robot was just in
+                        GameObject toInstantiate =
+                            BoardManager.Instance.visitedTiles
+                                        [Random.Range(0, BoardManager.Instance.visitedTiles.Length)];
+                        GameObject instance =
+                            Instantiate(toInstantiate,
+                                        new Vector3(gameObject.transform.position.x,
+                                                    gameObject.transform.position.y, 0f),
+                                        Quaternion.identity) as GameObject;
+                        Debug.Log(current.x + ", " + current.y);
+                        directions.Clear();
 
-            //Check if we have a non-zero value for horizontal or vertical
-            if (horizontal != 0 || vertical != 0)
-            {
-                //Call AttemptMove passing in the generic parameter Wall, since that is what Player may interact with if they encounter one (by attacking it)
-                //Pass in horizontal and vertical as parameters to specify the direction to move Player in.
-                AttemptMove<Wall>(horizontal, vertical);
+                    }
+                    //create new robots for the other directions
+                    else
+                    {
+
+                    }
+                }
             }
         }
 
+
         //AttemptMove overrides the AttemptMove function in the base class MovingObject
-        //AttemptMove takes a generic parameter T which for Player will be of the type Wall, it also takes integers for x and y direction to move in.
+        //AttemptMove takes a generic parameter T which for Robot will be of the type Wall, it also takes integers for x and y direction to move in.
         protected override void AttemptMove<T>(int xDir, int yDir)
         {
             //Call the AttemptMove method of the base class, passing in the component T (in this case Wall) and x and y direction to move.
             base.AttemptMove<T>(xDir, yDir);
 
-            //Hit allows us to reference the result of the Linecast done in Move.
-            RaycastHit2D hit;
-
-            //If Move returns true, meaning Player was able to move into an empty space.
-            if (Move(xDir, yDir, out hit))
-            {
-                //Call RandomizeSfx of SoundManager to play the move sound, passing in two audio clips to choose from.
-            }
-
-            //Since the player has moved and lost food points, check if the game has ended.
+            //Since the Robot has moved and lost food points, check if the game has ended.
             CheckIfGameOver();
 
-            //Set the playersTurn boolean of GameManager to false now that players turn is over.
+            //Set the RobotsTurn boolean of GameManager to false now that Robots turn is over.
             GameManager.instance.playersTurn = false;
         }
 
 
         //OnCantMove overrides the abstract function OnCantMove in MovingObject.
-        //It takes a generic parameter T which in the case of Player is a Wall which the player can attack and destroy.
+        //It takes a generic parameter T which in the case of Robot is a Wall which the Robot can attack and destroy.
         protected override void OnCantMove<T>(T component)
         {
-            //Set hitWall to equal the component passed in as a parameter.
-            Wall hitWall = component as Wall;
-
-            moveDir++;
-            if (moveDir > 3)
-                moveDir = 0;
-            //Call the DamageWall function of the Wall we are hitting.
-            //hitWall.DamageWall(wallDamage);
-
-            //Set the attack trigger of the player's animation controller in order to play the player's attack animation.
-            animator.SetTrigger("playerChop");
+            if (!stuck)
+            {
+                animator.SetTrigger("explosion");
+                stuck = true;
+            }
+            animator.SetTrigger("deadBuggy");
         }
 
 
@@ -129,7 +111,7 @@ namespace Completed
                 //Invoke the Restart function to start the next level with a delay of restartLevelDelay (default 1 second).
                 Invoke("Restart", restartLevelDelay);
 
-                //Disable the player object since level is over.
+                //Disable the Robot object since level is over.
                 enabled = false;
             }
 
@@ -137,8 +119,7 @@ namespace Completed
             else if (other.tag == "Food")
             {
                 hasKey = true;
-
-                //Disable the food object the player collided with.
+                //Disable the food object the Robot collided with.
                 other.gameObject.SetActive(false);
             }
 
@@ -146,8 +127,7 @@ namespace Completed
             else if (other.tag == "Soda")
             {
                 hasKey = true;
-
-                //Disable the soda object the player collided with.
+                //Disable the soda object the Robot collided with.
                 other.gameObject.SetActive(false);
             }
         }
@@ -161,31 +141,63 @@ namespace Completed
         }
 
 
-        //LoseFood is called when an enemy attacks the player.
+        //LoseFood is called when an enemy attacks the Robot.
         //It takes a parameter loss which specifies how many points to lose.
-        public void LoseFood(int loss)
+        public void LoseFood()
         {
-            //Set the trigger for the player animator to transition to the playerHit animation.
-            animator.SetTrigger("playerHit");
-
-            //Subtract lost food points from the players total.
-            food -= loss;
+            //Set the trigger for the Robot animator to transition to the RobotHit animation.
+            animator.SetTrigger("RobotHit");
 
             //Check to see if game has ended.
             CheckIfGameOver();
         }
 
 
-        //CheckIfGameOver checks if the player is out of food points and if so, ends the game.
+        //CheckIfGameOver checks if the Robot is out of food points and if so, ends the game.
         private void CheckIfGameOver()
         {
-            //Check if food point total is less than or equal to zero.
-            if (food <= 0)
-            {
+        }
 
-                //Call the GameOver function of GameManager.
-                GameManager.instance.GameOver();
+        //find directions that the robot can move to and add them to an array.
+        private void FindDirections()
+        {
+            //clear the directions array from last time
+
+            RaycastHit2D hit;
+
+            //check each direction for a free path. Add any free paths to the directions array
+
+            //up
+            if (Move(0, 1, out hit))
+            {
+                directions.Add(new Directions(0, 1));
+            }
+            //right
+            if (Move(1, 0, out hit))
+            {
+                directions.Add(new Directions(1, 0));
+            }
+            //down
+            if (Move(-1, 0, out hit))
+            {
+                directions.Add(new Directions(-1, 0));
+            }
+            //left
+            if (Move(0, -1, out hit))
+            {
+                directions.Add(new Directions(0, -1));
             }
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
