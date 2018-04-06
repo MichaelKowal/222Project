@@ -35,7 +35,7 @@ namespace Completed
         public GameObject[] enemy;                                      //Enemy object
         public GameObject[] outerWallTiles;                             //Array of outer tile prefabs.
         public GameObject[] visitedTiles;                               //Array of visited tiles
-        public GameObject robit;                                        //robot to be spawned at intersections
+        public GameObject[] robits;                                     //robots to be spawned at intersections
 
         private Transform boardHolder;                                  //A variable to store a reference to the transform of our Board object.
         private List<Vector3> gridPositions = new List<Vector3>();  //A list of possible locations to place tiles.
@@ -127,6 +127,14 @@ namespace Completed
             }
         }
 
+
+        //adds another robot to the game at a specified location
+        public void AddRobot()
+        {
+            Vector3 position = new Vector3(0,0,0f);
+
+            Instantiate(robits[0], position, Quaternion.identity);
+        }
 
         //SetupScene initializes our level and calls the previous functions to lay out the game board
         public void SetupScene()

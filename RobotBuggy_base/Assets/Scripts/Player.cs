@@ -34,6 +34,10 @@ namespace Completed
 
         private void Update()
         {
+            if(Input.GetButtonDown("Jump"))
+            {
+                GameManager.instance.boardScript.AddRobot();
+            }
             counter++;
             if (counter == 40)
             {
