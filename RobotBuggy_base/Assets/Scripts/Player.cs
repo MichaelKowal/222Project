@@ -22,6 +22,7 @@ namespace Completed
 
         protected override void Start()
         {
+            GameManager.instance.AddRobotToList(this);
             animator = GetComponent<Animator>();
             base.Start();
         }
@@ -31,13 +32,10 @@ namespace Completed
         {
         }
 
-
+        /*
         private void Update()
         {
-            if(Input.GetButtonDown("Jump"))
-            {
-                GameManager.instance.boardScript.AddRobot();
-            }
+
             counter++;
             if (counter == 40)
             {
@@ -73,6 +71,40 @@ namespace Completed
                     {
 
                     }
+                }
+            }
+        }
+        */
+
+        public void MoveRobot()
+        {
+            FindDirections();
+            //create a robot for each of the directions available
+            for (int i = 0; i < directions.Count; i++)
+            {
+                //used to make things more clear
+                Directions current = directions[i];
+                //move the active robit to the first available direction
+                if (i == 0)
+                {
+                    AttemptMove<Wall>(current.x, current.y);
+                    //create a tile in the spot the robot was just in
+                    GameObject toInstantiate =
+                        BoardManager.Instance.visitedTiles
+                                    [Random.Range(0, BoardManager.Instance.visitedTiles.Length)];
+                    GameObject instance =
+                        Instantiate(toInstantiate,
+                                    new Vector3(gameObject.transform.position.x,
+                                                gameObject.transform.position.y, 0f),
+                                    Quaternion.identity) as GameObject;
+                    Debug.Log(current.x + ", " + current.y);
+                    directions.Clear();
+
+                }
+                //create new robots for the other directions
+                else
+                {
+
                 }
             }
         }

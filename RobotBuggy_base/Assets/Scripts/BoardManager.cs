@@ -24,8 +24,8 @@ namespace Completed
         }
 
 
-        public int columns = 8;                                         //Number of columns in our game board.
-        public int rows = 8;                                            //Number of rows in our game board.
+        public int columns = 20;                                         //Number of columns in our game board.
+        public int rows = 15;                                            //Number of rows in our game board.
         public Count wallCount = new Count(5, 9);                       //Lower and upper limit for our random number of walls per level.
         public int key = 1;                                             //Number of keys in the level
         public GameObject exit;                                         //Prefab to spawn for exit.
@@ -35,7 +35,7 @@ namespace Completed
         public GameObject[] enemy;                                      //Enemy object
         public GameObject[] outerWallTiles;                             //Array of outer tile prefabs.
         public GameObject[] visitedTiles;                               //Array of visited tiles
-        public GameObject[] robits;                                     //robots to be spawned at intersections
+        public GameObject[] robots;                                     //robots to be spawned at intersections
 
         private Transform boardHolder;                                  //A variable to store a reference to the transform of our Board object.
         private List<Vector3> gridPositions = new List<Vector3>();  //A list of possible locations to place tiles.
@@ -131,9 +131,14 @@ namespace Completed
         //adds another robot to the game at a specified location
         public void AddRobot()
         {
-            Vector3 position = new Vector3(0,0,0f);
+            //spawns at a random location
+            Vector3 position = RandomPosition(); 
 
-            Instantiate(robits[0], position, Quaternion.identity);
+            //chooses a random robot
+            GameObject robot = robots[Random.Range(0, robots.Length)];
+
+            //adds it to the board
+            Instantiate(robot, position, Quaternion.identity);
         }
 
         //SetupScene initializes our level and calls the previous functions to lay out the game board

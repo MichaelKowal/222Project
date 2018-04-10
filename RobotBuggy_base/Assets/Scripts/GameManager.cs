@@ -18,6 +18,8 @@ namespace Completed
         private GameObject levelImage;                          //Image to block out level as levels are being set up, background for levelText.
         public BoardManager boardScript;                       //Store a reference to our BoardManager which will set up the level.
         private List<Enemy> enemies;                            //List of all Enemy units, used to issue them move commands.
+        private List<Player> robots;
+        private bool robotsMoving;
         private bool enemiesMoving;                             //Boolean to check if enemies are moving.
         private bool doingSetup = true;                         //Boolean to check if we're setting up board, prevent Player from moving during setup.
 
@@ -43,13 +45,14 @@ namespace Completed
 
             //Assign enemies to a new List of Enemy objects.
             enemies = new List<Enemy>();
-
+            robots = new List<Player>();
             //Get a component reference to the attached BoardManager script
             boardScript = GetComponent<BoardManager>();
 
             //Call the InitGame function to initialize the first level 
             InitGame();
         }
+
 
         //this is called only once, and the paramter tell it to be called only after the scene was loaded
         //(otherwise, our Scene Load callback would be called the very first load, and we don't want that)
@@ -90,7 +93,7 @@ namespace Completed
 
             //Clear any Enemy objects in our List to prepare for next level.
             enemies.Clear();
-
+            robots.Clear();
             //Call the SetupScene function of the BoardManager script, pass it current level number.
             boardScript.SetupScene();
 
@@ -110,8 +113,17 @@ namespace Completed
         //Update is called every frame.
         void Update()
         {
+            if (Input.GetButtonDown("Jump"))
+            {
+                GameManager.instance.boardScript.AddRobot();
+            }
+
+            //robots start moving only if it is their turn
+            if(playersTurn && !enemiesMoving && !robotsMoving && !doingSetup)
+                StartCoroutine(MoveRobots());
+
             //Check that playersTurn or enemiesMoving or doingSetup are not currently true.
-            if (playersTurn || enemiesMoving || doingSetup)
+            if (playersTurn || enemiesMoving ||robotsMoving|| doingSetup)
 
                 //If any of these are true, return and do not start MoveEnemies.
                 return;
@@ -125,6 +137,11 @@ namespace Completed
         {
             //Add Enemy to List enemies.
             enemies.Add(script);
+        }
+
+        public void AddRobotToList(Player script)
+        {
+            robots.Add(script);
         }
 
 
@@ -171,6 +188,32 @@ namespace Completed
 
             //Enemies are done moving, set enemiesMoving to false.
             enemiesMoving = false;
+        }
+
+        IEnumerator MoveRobots()
+        {
+            //While robotsMoving is true, enemies cannot move.
+            robotsMoving = true;
+
+            //Wait for turnDelay seconds, defaults to .1 (100 ms).
+            yield return new WaitForSeconds(turnDelay);
+
+
+
+            //Loop through List of robot objects.
+            for (int i = 0; i < robots.Count; i++)
+            {
+                //Call the MoveRobot function of Robot at index i in the robots List.
+                robots[i].MoveRobot();
+
+                //Wait for Enemy's moveTime before moving next Enemy, 
+                //yield return new WaitForSeconds(enemies[i].moveTime);
+            }
+            //Once robots are done moving, set playersTurn to false so enemies can move.
+            playersTurn = false;
+
+            //robots are done moving, set robotsMoving to false.
+            robotsMoving = false;
         }
     }
 }
