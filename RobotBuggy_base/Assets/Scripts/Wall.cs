@@ -20,23 +20,25 @@ namespace Completed
 			spriteRenderer = GetComponent<SpriteRenderer> ();
 		}
 		
-		
+		//GRAEME -- I've emptied this method, as we don't want anything to happen when the robot hits a wall.
+
 		//DamageWall is called when the player attacks a wall.
 		public void DamageWall (int loss)
+	
 		{
-			//Call the RandomizeSfx function of SoundManager to play one of two chop sounds.
-			SoundManager.instance.RandomizeSfx (chopSound1, chopSound2);
-			
-			//Set spriteRenderer to the damaged wall sprite.
-			spriteRenderer.sprite = dmgSprite;
-			
-			//Subtract loss from hit point total.
-			hp -= loss;
-			
-			//If hit points are less than or equal to zero:
-			if(hp <= 0)
-				//Disable the gameObject.
-				gameObject.SetActive (false);
+//			//Call the RandomizeSfx function of SoundManager to play one of two chop sounds.
+//			SoundManager.instance.RandomizeSfx (chopSound1, chopSound2);
+//			
+//			//Set spriteRenderer to the damaged wall sprite.
+//			spriteRenderer.sprite = dmgSprite;
+//			
+//			//Subtract loss from hit point total.
+//			hp -= loss;
+//			
+//			//If hit points are less than or equal to zero:
+//			if(hp <= 0)
+//				//Disable the gameObject.
+//				gameObject.SetActive (false);
 		}
 	}
 }
