@@ -38,7 +38,7 @@ namespace Completed
 			food = GameManager.instance.playerFoodPoints;
 			
 			//Set the foodText to reflect the current player food total.
-			foodText.text = "Food: " + food;
+			foodText.text = "";
 			
 			//Call the Start function of the MovingObject base class.
 			base.Start ();
@@ -131,10 +131,10 @@ namespace Completed
 		protected override void AttemptMove <T> (int xDir, int yDir)
 		{
 			//Every time player moves, subtract from food points total.
-			food--;
+			//food--;
 			
 			//Update food text display to reflect current score.
-			foodText.text = "Food: " + food;
+			//foodText.text = "Food: " + food;
 			
 			//Call the AttemptMove method of the base class, passing in the component T (in this case Wall) and x and y direction to move.
 			base.AttemptMove <T> (xDir, yDir);
@@ -161,14 +161,14 @@ namespace Completed
 		//It takes a generic parameter T which in the case of Player is a Wall which the player can attack and destroy.
 		protected override void OnCantMove <T> (T component)
 		{
-			//Set hitWall to equal the component passed in as a parameter.
-			Wall hitWall = component as Wall;
-			
-			//Call the DamageWall function of the Wall we are hitting.
-			hitWall.DamageWall (wallDamage);
-			
-			//Set the attack trigger of the player's animation controller in order to play the player's attack animation.
-			animator.SetTrigger ("playerChop");
+//			//Set hitWall to equal the component passed in as a parameter.
+//			Wall hitWall = component as Wall;
+//			
+//			//Call the DamageWall function of the Wall we are hitting.
+//			hitWall.DamageWall (wallDamage);
+//			
+//			//Set the attack trigger of the player's animation controller in order to play the player's attack animation.
+//			animator.SetTrigger ("PlayerKilled");
 		}
 		
 		
@@ -178,6 +178,8 @@ namespace Completed
 			//Check if the tag of the trigger collided with is Exit.
 			if(other.tag == "Exit")
 			{
+				SoundManager.instance.RandomizeSfx (eatSound1, eatSound2);
+
 				//Invoke the Restart function to start the next level with a delay of restartLevelDelay (default 1 second).
 				Invoke ("Restart", restartLevelDelay);
 				
@@ -189,10 +191,11 @@ namespace Completed
 			else if(other.tag == "Food")
 			{
 				//Add pointsPerFood to the players current food total.
-				food += pointsPerFood;
+//				food += pointsPerFood;
 				
 				//Update foodText to represent current total and notify player that they gained points
-				foodText.text = "+" + pointsPerFood + " Food: " + food;
+//				foodText.text = "+" + pointsPerFood + " Food: " + food;
+				foodText.text = "You've got the Key! ";
 				
 				//Call the RandomizeSfx function of SoundManager and pass in two eating sounds to choose between to play the eating sound effect.
 				SoundManager.instance.RandomizeSfx (eatSound1, eatSound2);
@@ -205,10 +208,12 @@ namespace Completed
 			else if(other.tag == "Soda")
 			{
 				//Add pointsPerSoda to players food points total
-				food += pointsPerSoda;
+//				food += pointsPerSoda;
+				foodText.text = "You've got the Key! ";
+
 				
 				//Update foodText to represent current total and notify player that they gained points
-				foodText.text = "+" + pointsPerSoda + " Food: " + food;
+//				foodText.text = "+" + pointsPerSoda + " Food: " + food;
 				
 				//Call the RandomizeSfx function of SoundManager and pass in two drinking sounds to choose between to play the drinking sound effect.
 				SoundManager.instance.RandomizeSfx (drinkSound1, drinkSound2);
@@ -233,13 +238,14 @@ namespace Completed
 		public void LoseFood (int loss)
 		{
 			//Set the trigger for the player animator to transition to the playerHit animation.
-			animator.SetTrigger ("playerHit");
+			animator.SetTrigger ("PlayerKilled");
+
 			
 			//Subtract lost food points from the players total.
-			food -= loss;
+			//food -= loss;
 			
 			//Update the food display with the new total.
-			foodText.text = "-"+ loss + " Food: " + food;
+			//foodText.text = "-"+ loss + " Food: " + food;
 			
 			//Check to see if game has ended.
 			CheckIfGameOver ();
@@ -250,17 +256,17 @@ namespace Completed
 		private void CheckIfGameOver ()
 		{
 			//Check if food point total is less than or equal to zero.
-			if (food <= 0) 
-			{
-				//Call the PlaySingle function of SoundManager and pass it the gameOverSound as the audio clip to play.
-				SoundManager.instance.PlaySingle (gameOverSound);
-				
-				//Stop the background music.
-				SoundManager.instance.musicSource.Stop();
-				
-				//Call the GameOver function of GameManager.
-				GameManager.instance.GameOver ();
-			}
+//			if (food <= 0) 
+//			{
+//				//Call the PlaySingle function of SoundManager and pass it the gameOverSound as the audio clip to play.
+//				SoundManager.instance.PlaySingle (gameOverSound);
+//				
+//				//Stop the background music.
+//				SoundManager.instance.musicSource.Stop();
+//				
+//				//Call the GameOver function of GameManager.
+//				GameManager.instance.GameOver ();
+//			}
 		}
 	}
 }

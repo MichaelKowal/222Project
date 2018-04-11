@@ -56,8 +56,13 @@ namespace Completed
 		//A variable to store a reference to the transform of our Board object.
 		private List <Vector3> gridPositions = new List <Vector3> ();
 		//A list of possible locations to place tiles.
-		
-		
+
+		//List of Key Positions
+		private List <Vector3>  keyPositions = new List<Vector3>();
+
+		//List of Enemy Positions
+		private List <Vector3>  enemyPositions = new List<Vector3>();
+
 		//Clears our list gridPositions and prepares it to generate a new board.
 		void InitialiseList ()
 		{
@@ -73,6 +78,32 @@ namespace Completed
 				}
 			}
 		}
+
+		//The following two methods initialize the list of key and enemy placements on the grid. 
+		void InitializeKeyList(){
+			keyPositions.Clear ();
+
+			keyPositions.Add (new Vector3 (1, 2, 0f));
+			keyPositions.Add (new Vector3 (0, 13, 0f));
+			keyPositions.Add (new Vector3 (6, 8, 0f));
+			keyPositions.Add (new Vector3 (10, 2, 0f));
+			keyPositions.Add (new Vector3 (12, 8, 0f));
+			keyPositions.Add (new Vector3 (14, 0, 0f));
+			keyPositions.Add (new Vector3 (15, 12, 0f));
+
+		}
+
+		void InitializeEnemyList(){
+			enemyPositions.Clear ();
+
+			enemyPositions.Add (new Vector3 (5, 11, 0f));
+			enemyPositions.Add (new Vector3 (9, 6, 0f));
+			enemyPositions.Add (new Vector3 (16, 9, 0f));
+			enemyPositions.Add (new Vector3 (19, 0, 0f));
+			enemyPositions.Add (new Vector3 (18, 14, 0f));
+
+		}
+
 		
 		
 		//Sets up the outer walls and floor (background) of the game board.
@@ -174,17 +205,30 @@ namespace Completed
 			//Return the randomly selected Vector3 position.
 			return randomPosition;
 		}
+
+//		Vector3 RandomKeyPosition ()
+//		{
+//			
+//			//Declare an integer randomIndex, set it's value to a random number between 0 and the count of items in our List gridPositions.
+//
+//			//Declare a variable of type Vector3 called randomPosition, set it's value to the entry at randomIndex from our List gridPositions.
+//			Vector3 randomPosition = gridPositions [randomIndex];
+//
+//			//Remove the entry at randomIndex from the list so that it can't be re-used.
+//			gridPositions.RemoveAt (randomIndex);
+//
+//			//Return the randomly selected Vector3 position.
+//			return randomPosition;
+//		}
 		
 		
 		//LayoutObjectAtRandom accepts an array of game objects to choose from along with a minimum and maximum range for the number of objects to create.
 		//This would be the method to setup the wall tiles. 
-		void LayoutObjectAtRandom (GameObject[] tileArray, int minimum, int maximum)
+		void LayoutObjectAtRandom (GameObject[] tileArray)
 		{
 			//Choose a random number of objects to instantiate within the minimum and maximum limits
-			int objectCount = Random.Range (minimum, maximum + 1);
-			
+
 			//Instantiate objects until the randomly chosen limit objectCount is reached
-			for (int i = 0; i < objectCount; i++) {
 				//Choose a position for randomPosition by getting a random position from our list of available Vector3s stored in gridPosition
 				Vector3 randomPosition = RandomPosition ();
 				
@@ -193,7 +237,37 @@ namespace Completed
 				
 				//Instantiate tileChoice at the position returned by RandomPosition with no change in rotation
 				Instantiate (tileChoice, randomPosition, Quaternion.identity);
-			}
+		}
+
+		//Places the key in a selection of predetermined spaces. 
+		void PlaceKey (GameObject[] tileArray)
+		{
+
+			int randomIndex = Random.Range (0, keyPositions.Count);
+
+			Vector3 position = keyPositions [randomIndex];
+
+			//Choose a random tile from tileArray and assign it to tileChoice
+			GameObject tileChoice = tileArray [Random.Range (0, tileArray.Length)];
+
+			//Instantiate tileChoice at the position returned by RandomPosition with no change in rotation
+			Instantiate (tileChoice, position, Quaternion.identity);
+		
+		}
+
+		void PlaceEnemy (GameObject[] tileArray)
+		{
+
+			int randomIndex = Random.Range (0, enemyPositions.Count);
+
+			Vector3 position = enemyPositions [randomIndex];
+
+			//Choose a random tile from tileArray and assign it to tileChoice
+			GameObject tileChoice = tileArray [Random.Range (0, tileArray.Length)];
+
+			//Instantiate tileChoice at the position returned by RandomPosition with no change in rotation
+			Instantiate (tileChoice, position, Quaternion.identity);
+
 		}
 
 		void LayoutTileIndexManyLoops (GameObject[] tileArray)
@@ -1073,6 +1147,10 @@ namespace Completed
 			
 			//Reset our list of gridpositions.
 			InitialiseList ();
+			//initialize EnemyPositionList
+			InitializeEnemyList();
+			//Initialize KeyPositionList
+			InitializeKeyList();
 			
 			//Instantiate a random number of wall tiles based on minimum and maximum, at randomized positions.
 			//This is the call that needs to change to another method that generates the maze.
@@ -1087,13 +1165,13 @@ namespace Completed
 			//LayoutTileIndexNoLoops (wallTiles);
 			
 			//Instantiate a random number of food tiles based on minimum and maximum, at randomized positions.
-			LayoutObjectAtRandom (foodTiles, foodCount.minimum, foodCount.maximum);
+			PlaceKey (foodTiles);
 			
 			//Determine number of enemies based on current level number, based on a logarithmic progression
-			int enemyCount = (int)Mathf.Log (level, 2f);
+			//int enemyCount = (int)Mathf.Log (level, 2f);
 			
 			//Instantiate a random number of enemies based on minimum and maximum, at randomized positions.
-			LayoutObjectAtRandom (enemyTiles, enemyCount, enemyCount);
+			PlaceEnemy (enemyTiles);
 			
 			//Instantiate the exit tile in the upper right hand corner of our game board
 			Instantiate (exit, new Vector3 (columns - 1, rows - 1, 0f), Quaternion.identity);
