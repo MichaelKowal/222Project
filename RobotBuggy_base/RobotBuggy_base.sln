@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2017
+# Visual Studio for Mac
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotBuggy_base", "RobotBuggy_base.csproj", "{6AF0B788-1D04-23F0-76C2-4664CDD25F67}"
 EndProject
 Global

@@ -14,6 +14,18 @@ namespace Completed
         public int pointsPerSoda = 20;              //Number of points to add to Robot food points when picking up a soda object.
         public int wallDamage = 1;                  //How much damage a Robot does to a wall when chopping it.
         public bool hasKey = false;
+
+        public Text foodText;                       //UI Text to display current player food total.
+        public AudioClip moveSound1;                //1 of 2 Audio clips to play when player moves.
+        public AudioClip moveSound2;                //2 of 2 Audio clips to play when player moves.
+        public AudioClip eatSound1;                 //1 of 2 Audio clips to play when player collects a food object.
+        public AudioClip eatSound2;                 //2 of 2 Audio clips to play when player collects a food object.
+        public AudioClip drinkSound1;               //1 of 2 Audio clips to play when player collects a soda object.
+        public AudioClip drinkSound2;               //2 of 2 Audio clips to play when player collects a soda object.
+        public AudioClip gameOverSound;             //Audio clip to play when player dies.
+
+        private int food;                           //Used to store player food points total during level.
+
         private Animator animator;                  //Used to store a reference to the Robot's animator component.
         private bool stuck = false;
         private List<Directions> directions = new List<Directions>();
@@ -24,12 +36,16 @@ namespace Completed
         {
             GameManager.instance.AddRobotToList(this);
             animator = GetComponent<Animator>();
+            //Set the foodText to reflect the current player food total.
+            foodText.text = "";
             base.Start();
         }
 
 
         private void OnDisable()
         {
+            //When Player object is disabled, store the current local food total in the GameManager so it can be re-loaded in next level.
+            GameManager.instance.playerFoodPoints = food;
         }
 
         /*
@@ -119,6 +135,8 @@ namespace Completed
             //Call the AttemptMove method of the base class, passing in the component T (in this case Wall) and x and y direction to move.
             base.AttemptMove<T>(xDir, yDir);
 
+            //Hit allows us to reference the result of the Linecast done in Move.            RaycastHit2D hit;                       //If Move returns true, meaning Player was able to move into an empty space.            if (Move (xDir, yDir, out hit))             {               //Call RandomizeSfx of SoundManager to play the move sound, passing in two audio clips to choose from.              SoundManager.instance.RandomizeSfx (moveSound1, moveSound2);            }
+
             //Since the Robot has moved and lost food points, check if the game has ended.
             CheckIfGameOver();
 
@@ -146,6 +164,8 @@ namespace Completed
             //Check if the tag of the trigger collided with is Exit.
             if (other.tag == "Exit" && hasKey)
             {
+
+                SoundManager.instance.RandomizeSfx(eatSound1, eatSound2); 
                 //Invoke the Restart function to start the next level with a delay of restartLevelDelay (default 1 second).
                 Invoke("Restart", restartLevelDelay);
 
@@ -157,6 +177,7 @@ namespace Completed
             else if (other.tag == "Food")
             {
                 hasKey = true;
+                //Update foodText to represent current total and notify player that they gained points                 //foodText.text = "+" + pointsPerFood + " Food: " + food;                 foodText.text = "You've got the Key! ";                                 //Call the RandomizeSfx function of SoundManager and pass in two eating sounds to choose between to play the eating sound effect.               SoundManager.instance.RandomizeSfx (eatSound1, eatSound2);
                 //Disable the food object the Robot collided with.
                 other.gameObject.SetActive(false);
             }
@@ -174,8 +195,9 @@ namespace Completed
         //Restart reloads the scene when called.
         private void Restart()
         {
-            //Load the last scene loaded, in this case Main, the only scene in the game.
-            SceneManager.LoadScene(0);
+            //Load the last scene loaded, in this case Main, the only scene in the game. And we load it in "Single" mode so it replace the existing one
+            //and not load all the scene object in the current scene.
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
         }
 
 
@@ -183,8 +205,8 @@ namespace Completed
         //It takes a parameter loss which specifies how many points to lose.
         public void LoseFood()
         {
-            //Set the trigger for the Robot animator to transition to the RobotHit animation.
-            animator.SetTrigger("RobotHit");
+            //Set the trigger for the player animator to transition to the playerHit animation.
+            animator.SetTrigger("PlayerKilled");
 
             //Check to see if game has ended.
             CheckIfGameOver();

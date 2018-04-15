@@ -17,6 +17,7 @@ namespace Completed
         private Text levelText;                                 //Text to display current level number.
         private GameObject levelImage;                          //Image to block out level as levels are being set up, background for levelText.
         public BoardManager boardScript;                       //Store a reference to our BoardManager which will set up the level.
+        private int level = 1;                                  //Current level number, expressed in game as "Day 1".
         private List<Enemy> enemies;                            //List of all Enemy units, used to issue them move commands.
         private List<Player> robots;                            //list of all the robot units, used to issue commands
         public List<int> counters;                              //list of robots frame counters. They only move once it reaches a  certain number
@@ -85,7 +86,7 @@ namespace Completed
             levelText = GameObject.Find("LevelText").GetComponent<Text>();
 
             //Set the text of levelText to the string "Day" and append the current level number.
-            levelText.text = "Can they make it?";
+            levelText.text = "Welcome";
 
             //Set levelImage to active blocking player's view of the game board during setup.
             levelImage.SetActive(true);
@@ -96,8 +97,9 @@ namespace Completed
             //Clear any Enemy objects in our List to prepare for next level.
             enemies.Clear();
             robots.Clear();
+
             //Call the SetupScene function of the BoardManager script, pass it current level number.
-            boardScript.SetupScene();
+            boardScript.SetupScene(level);
 
         }
 
@@ -153,7 +155,7 @@ namespace Completed
         public void GameOver()
         {
             //Set levelText to display number of levels passed and game over message
-            levelText.text = "No they can't";
+            levelText.text = "You Have Failed";
 
             //Enable black background image gameObject.
             levelImage.SetActive(true);
@@ -230,4 +232,3 @@ namespace Completed
         }
     }
 }
-
