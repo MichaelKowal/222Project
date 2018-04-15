@@ -18,8 +18,10 @@ namespace Completed
         private GameObject levelImage;                          //Image to block out level as levels are being set up, background for levelText.
         public BoardManager boardScript;                       //Store a reference to our BoardManager which will set up the level.
         private List<Enemy> enemies;                            //List of all Enemy units, used to issue them move commands.
-        private List<Player> robots;
-        private bool robotsMoving;
+        private List<Player> robots;                            //list of all the robot units, used to issue commands
+        public List<int> counters;                              //list of robots frame counters. They only move once it reaches a  certain number
+        private int enemyCounter = 0;                               //used to delay the enemy movement
+        private bool robotsMoving;                              // checks if robots are moving
         private bool enemiesMoving;                             //Boolean to check if enemies are moving.
         private bool doingSetup = true;                         //Boolean to check if we're setting up board, prevent Player from moving during setup.
 
@@ -113,6 +115,7 @@ namespace Completed
         //Update is called every frame.
         void Update()
         {
+           
             if (Input.GetButtonDown("Jump"))
             {
                 GameManager.instance.boardScript.AddRobot();
@@ -141,6 +144,7 @@ namespace Completed
 
         public void AddRobotToList(Player script)
         {
+            counters.Add(0);
             robots.Add(script);
         }
 
@@ -177,8 +181,13 @@ namespace Completed
             //Loop through List of Enemy objects.
             for (int i = 0; i < enemies.Count; i++)
             {
-                //Call the MoveEnemy function of Enemy at index i in the enemies List.
-                enemies[i].MoveEnemy();
+                enemyCounter++;
+                if (enemyCounter == 5)
+                {
+                    enemyCounter = 0;
+                    //Call the MoveEnemy function of Enemy at index i in the enemies List.
+                    enemies[i].MoveEnemy();
+                }
 
                 //Wait for Enemy's moveTime before moving next Enemy, 
                 yield return new WaitForSeconds(enemies[i].moveTime);
@@ -203,9 +212,13 @@ namespace Completed
             //Loop through List of robot objects.
             for (int i = 0; i < robots.Count; i++)
             {
-                //Call the MoveRobot function of Robot at index i in the robots List.
-                robots[i].MoveRobot();
-
+                counters[i]++;
+                if (counters[i] == 5)
+                {
+                    counters[i] = 0;
+                    //Call the MoveRobot function of Robot at index i in the robots List.
+                    robots[i].MoveRobot();
+                }
                 //Wait for Enemy's moveTime before moving next Enemy, 
                 //yield return new WaitForSeconds(enemies[i].moveTime);
             }

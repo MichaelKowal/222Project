@@ -78,7 +78,9 @@ namespace Completed
 
         public void MoveRobot()
         {
-            FindDirections();
+            
+            
+                FindDirections();
             //create a robot for each of the directions available
             for (int i = 0; i < directions.Count; i++)
             {
