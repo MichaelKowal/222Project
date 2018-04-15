@@ -16,8 +16,13 @@ namespace Completed
 
         private Text levelText;                                 //Text to display current level number.
         private GameObject levelImage;                          //Image to block out level as levels are being set up, background for levelText.
-        private BoardManager boardScript;                       //Store a reference to our BoardManager which will set up the level.
+        public BoardManager boardScript;                       //Store a reference to our BoardManager which will set up the level.
+        private int level = 1;                                  //Current level number, expressed in game as "Day 1".
         private List<Enemy> enemies;                            //List of all Enemy units, used to issue them move commands.
+        private List<Player> robots;                            //list of all the robot units, used to issue commands
+        public List<int> counters;                              //list of robots frame counters. They only move once it reaches a  certain number
+        private int enemyCounter = 0;                               //used to delay the enemy movement
+        private bool robotsMoving;                              // checks if robots are moving
         private bool enemiesMoving;                             //Boolean to check if enemies are moving.
         private bool doingSetup = true;                         //Boolean to check if we're setting up board, prevent Player from moving during setup.
 
@@ -43,13 +48,14 @@ namespace Completed
 
             //Assign enemies to a new List of Enemy objects.
             enemies = new List<Enemy>();
-
+            robots = new List<Player>();
             //Get a component reference to the attached BoardManager script
             boardScript = GetComponent<BoardManager>();
 
             //Call the InitGame function to initialize the first level 
             InitGame();
         }
+
 
         //this is called only once, and the paramter tell it to be called only after the scene was loaded
         //(otherwise, our Scene Load callback would be called the very first load, and we don't want that)
@@ -80,7 +86,7 @@ namespace Completed
             levelText = GameObject.Find("LevelText").GetComponent<Text>();
 
             //Set the text of levelText to the string "Day" and append the current level number.
-            levelText.text = "Can they make it?";
+            levelText.text = "Welcome";
 
             //Set levelImage to active blocking player's view of the game board during setup.
             levelImage.SetActive(true);
@@ -90,9 +96,10 @@ namespace Completed
 
             //Clear any Enemy objects in our List to prepare for next level.
             enemies.Clear();
+            robots.Clear();
 
             //Call the SetupScene function of the BoardManager script, pass it current level number.
-            boardScript.SetupScene();
+            boardScript.SetupScene(level);
 
         }
 
@@ -110,8 +117,18 @@ namespace Completed
         //Update is called every frame.
         void Update()
         {
+           
+            if (Input.GetButtonDown("Jump"))
+            {
+                GameManager.instance.boardScript.AddRobot();
+            }
+
+            //robots start moving only if it is their turn
+            if(playersTurn && !enemiesMoving && !robotsMoving && !doingSetup)
+                StartCoroutine(MoveRobots());
+
             //Check that playersTurn or enemiesMoving or doingSetup are not currently true.
-            if (playersTurn || enemiesMoving || doingSetup)
+            if (playersTurn || enemiesMoving ||robotsMoving|| doingSetup)
 
                 //If any of these are true, return and do not start MoveEnemies.
                 return;
@@ -127,12 +144,18 @@ namespace Completed
             enemies.Add(script);
         }
 
+        public void AddRobotToList(Player script)
+        {
+            counters.Add(0);
+            robots.Add(script);
+        }
+
 
         //GameOver is called when the player reaches 0 food points
         public void GameOver()
         {
             //Set levelText to display number of levels passed and game over message
-            levelText.text = "No they can't";
+            levelText.text = "You Have Failed";
 
             //Enable black background image gameObject.
             levelImage.SetActive(true);
@@ -160,8 +183,13 @@ namespace Completed
             //Loop through List of Enemy objects.
             for (int i = 0; i < enemies.Count; i++)
             {
-                //Call the MoveEnemy function of Enemy at index i in the enemies List.
-                enemies[i].MoveEnemy();
+                enemyCounter++;
+                if (enemyCounter == 5)
+                {
+                    enemyCounter = 0;
+                    //Call the MoveEnemy function of Enemy at index i in the enemies List.
+                    enemies[i].MoveEnemy();
+                }
 
                 //Wait for Enemy's moveTime before moving next Enemy, 
                 yield return new WaitForSeconds(enemies[i].moveTime);
@@ -172,6 +200,35 @@ namespace Completed
             //Enemies are done moving, set enemiesMoving to false.
             enemiesMoving = false;
         }
+
+        IEnumerator MoveRobots()
+        {
+            //While robotsMoving is true, enemies cannot move.
+            robotsMoving = true;
+
+            //Wait for turnDelay seconds, defaults to .1 (100 ms).
+            yield return new WaitForSeconds(turnDelay);
+
+
+
+            //Loop through List of robot objects.
+            for (int i = 0; i < robots.Count; i++)
+            {
+                counters[i]++;
+                if (counters[i] == 5)
+                {
+                    counters[i] = 0;
+                    //Call the MoveRobot function of Robot at index i in the robots List.
+                    robots[i].MoveRobot();
+                }
+                //Wait for Enemy's moveTime before moving next Enemy, 
+                //yield return new WaitForSeconds(enemies[i].moveTime);
+            }
+            //Once robots are done moving, set playersTurn to false so enemies can move.
+            playersTurn = false;
+
+            //robots are done moving, set robotsMoving to false.
+            robotsMoving = false;
+        }
     }
 }
-
