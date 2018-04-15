@@ -120,7 +120,7 @@ namespace Completed
            
             if (Input.GetButtonDown("Jump"))
             {
-                GameManager.instance.boardScript.AddRobot();
+                GameManager.instance.boardScript.AddRobot(new Vector3(0f, 0f, 0f));
             }
 
             //robots start moving only if it is their turn

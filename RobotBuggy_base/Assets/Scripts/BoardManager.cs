@@ -70,13 +70,14 @@ namespace Completed
         {
             keyPositions.Clear();
 
-            keyPositions.Add(new Vector3(1, 2, 0f));
-            keyPositions.Add(new Vector3(0, 13, 0f));
-            keyPositions.Add(new Vector3(6, 8, 0f));
-            keyPositions.Add(new Vector3(10, 2, 0f));
-            keyPositions.Add(new Vector3(12, 8, 0f));
-            keyPositions.Add(new Vector3(14, 0, 0f));
-            keyPositions.Add(new Vector3(15, 12, 0f));
+            keyPositions.Add(new Vector3(2, 0, 0f));
+            //keyPositions.Add(new Vector3(1, 2, 0f));
+            //keyPositions.Add(new Vector3(0, 13, 0f));
+            //keyPositions.Add(new Vector3(6, 8, 0f));
+            //keyPositions.Add(new Vector3(10, 2, 0f));
+            //keyPositions.Add(new Vector3(12, 8, 0f));
+            //keyPositions.Add(new Vector3(14, 0, 0f));
+            //keyPositions.Add(new Vector3(15, 12, 0f));
 
         }
 
@@ -191,10 +192,10 @@ namespace Completed
         }
 
         //adds another robot to the game at a specified location
-        public void AddRobot()
+        public void AddRobot(Vector3 Position)
         {
             //spawns at a random location
-            Vector3 position = RandomPosition(); 
+            Vector3 position = Position; 
 
             //chooses a random robot
             GameObject robot = robots[Random.Range(0, robots.Length)];
@@ -1090,13 +1091,13 @@ namespace Completed
             //This is the call that needs to change to another method that generates the maze.
 
             //Call if you want many loops in the maze
-            //LayoutTileIndexManyLoops (wallTiles);
+            LayoutTileIndexManyLoops (wallTiles);
 
             //Call if you want one large loop in the maze
             //LayoutTileIndexOneLargeLoop (wallTiles);
 
             //Call if you want no loops
-            LayoutTileIndexNoLoops(wallTiles);
+            //LayoutTileIndexNoLoops(wallTiles);
 
             //Instantiate a random number of food tiles based on minimum and maximum, at randomized positions.
             PlaceKey(foodTiles);

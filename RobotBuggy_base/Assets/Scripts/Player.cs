@@ -37,7 +37,7 @@ namespace Completed
             GameManager.instance.AddRobotToList(this);
             animator = GetComponent<Animator>();
             //Set the foodText to reflect the current player food total.
-            foodText.text = "";
+            //foodText.text = "";
             base.Start();
         }
 
@@ -48,56 +48,12 @@ namespace Completed
             GameManager.instance.playerFoodPoints = food;
         }
 
-        /*
-        private void Update()
-        {
-
-            counter++;
-            if (counter == 40)
-            {
-                counter = 0;
-                //If it's not the Robot's turn, exit the function.
-                if (!GameManager.instance.playersTurn) return;
-
-                FindDirections();
-                //create a robot for each of the directions available
-                for (int i = 0; i < directions.Count; i++)
-                {
-                    //used to make things more clear
-                    Directions current = directions[i];
-                    //move the active robit to the first available direction
-                    if (i == 0)
-                    {
-                        AttemptMove<Wall>(current.x, current.y);
-                        //create a tile in the spot the robot was just in
-                        GameObject toInstantiate =
-                            BoardManager.Instance.visitedTiles
-                                        [Random.Range(0, BoardManager.Instance.visitedTiles.Length)];
-                        GameObject instance =
-                            Instantiate(toInstantiate,
-                                        new Vector3(gameObject.transform.position.x,
-                                                    gameObject.transform.position.y, 0f),
-                                        Quaternion.identity) as GameObject;
-                        Debug.Log(current.x + ", " + current.y);
-                        directions.Clear();
-
-                    }
-                    //create new robots for the other directions
-                    else
-                    {
-
-                    }
-                }
-            }
-        }
-        */
-
         public void MoveRobot()
         {
-            
-            
-                FindDirections();
+            FindDirections();
             //create a robot for each of the directions available
+            float previousX = gameObject.transform.position.x;
+            float previousY = gameObject.transform.position.y;
             for (int i = 0; i < directions.Count; i++)
             {
                 //used to make things more clear
@@ -116,15 +72,17 @@ namespace Completed
                                                 gameObject.transform.position.y, 0f),
                                     Quaternion.identity) as GameObject;
                     Debug.Log(current.x + ", " + current.y);
-                    directions.Clear();
 
                 }
                 //create new robots for the other directions
                 else
                 {
-
+                    Vector3 position = new Vector3(previousX + directions[i - 1].x,
+                                                   previousY + directions[i- 1].y, 0f);
+                    BoardManager.Instance.AddRobot(position);
                 }
             }
+            directions.Clear();
         }
 
 
@@ -179,14 +137,6 @@ namespace Completed
                 hasKey = true;
                 //Update foodText to represent current total and notify player that they gained points                 //foodText.text = "+" + pointsPerFood + " Food: " + food;                 foodText.text = "You've got the Key! ";                                 //Call the RandomizeSfx function of SoundManager and pass in two eating sounds to choose between to play the eating sound effect.               SoundManager.instance.RandomizeSfx (eatSound1, eatSound2);
                 //Disable the food object the Robot collided with.
-                other.gameObject.SetActive(false);
-            }
-
-            //Check if the tag of the trigger collided with is Soda.
-            else if (other.tag == "Soda")
-            {
-                hasKey = true;
-                //Disable the soda object the Robot collided with.
                 other.gameObject.SetActive(false);
             }
         }
@@ -250,14 +200,3 @@ namespace Completed
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
