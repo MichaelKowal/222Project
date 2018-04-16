@@ -18,10 +18,6 @@ namespace Completed
         public Text foodText;                       //UI Text to display current player food total.
         public AudioClip moveSound1;                //1 of 2 Audio clips to play when player moves.
         public AudioClip moveSound2;                //2 of 2 Audio clips to play when player moves.
-        public AudioClip eatSound1;                 //1 of 2 Audio clips to play when player collects a food object.
-        public AudioClip eatSound2;                 //2 of 2 Audio clips to play when player collects a food object.
-        public AudioClip drinkSound1;               //1 of 2 Audio clips to play when player collects a soda object.
-        public AudioClip drinkSound2;               //2 of 2 Audio clips to play when player collects a soda object.
         public AudioClip gameOverSound;             //Audio clip to play when player dies.
 
         private int food;                           //Used to store player food points total during level.
@@ -64,8 +60,7 @@ namespace Completed
                     AttemptMove<Wall>(current.x, current.y);
                     //create a tile in the spot the robot was just in
                     GameObject toInstantiate =
-                        BoardManager.Instance.visitedTiles
-                                    [Random.Range(0, BoardManager.Instance.visitedTiles.Length)];
+                        BoardManager.Instance.visitedTiles[Random.Range(0, BoardManager.Instance.visitedTiles.Length)];
                     GameObject instance =
                         Instantiate(toInstantiate,
                                     new Vector3(gameObject.transform.position.x,
@@ -93,7 +88,15 @@ namespace Completed
             //Call the AttemptMove method of the base class, passing in the component T (in this case Wall) and x and y direction to move.
             base.AttemptMove<T>(xDir, yDir);
 
-            //Hit allows us to reference the result of the Linecast done in Move.            RaycastHit2D hit;                       //If Move returns true, meaning Player was able to move into an empty space.            if (Move (xDir, yDir, out hit))             {               //Call RandomizeSfx of SoundManager to play the move sound, passing in two audio clips to choose from.              SoundManager.instance.RandomizeSfx (moveSound1, moveSound2);            }
+            //Hit allows us to reference the result of the Linecast done in Move.
+           RaycastHit2D hit1;
+          
+           //If Move returns true, meaning Player was able to move into an empty space.
+           if (Move (xDir, yDir, out hit1)) 
+           {
+              //Call RandomizeSfx of SoundManager to play the move sound, passing in two audio clips to choose from.
+             SoundManager.instance.RandomizeSfx (moveSound1, moveSound2);
+           }
 
             //Since the Robot has moved and lost food points, check if the game has ended.
             CheckIfGameOver();
@@ -123,7 +126,7 @@ namespace Completed
             if (other.tag == "Exit" && hasKey)
             {
 
-                SoundManager.instance.RandomizeSfx(eatSound1, eatSound2); 
+
                 //Invoke the Restart function to start the next level with a delay of restartLevelDelay (default 1 second).
                 Invoke("Restart", restartLevelDelay);
 
@@ -135,9 +138,16 @@ namespace Completed
             else if (other.tag == "Food")
             {
                 hasKey = true;
-                //Update foodText to represent current total and notify player that they gained points                 //foodText.text = "+" + pointsPerFood + " Food: " + food;                 foodText.text = "You've got the Key! ";                                 //Call the RandomizeSfx function of SoundManager and pass in two eating sounds to choose between to play the eating sound effect.               SoundManager.instance.RandomizeSfx (eatSound1, eatSound2);
+                //Update foodText to represent current total and notify player that they gained points
+                //foodText.text = "+" + pointsPerFood + " Food: " + food;
+                foodText.text = "You've got the Key! ";
                 //Disable the food object the Robot collided with.
                 other.gameObject.SetActive(false);
+            }
+
+            if(other.tag == "Driven")
+            {
+
             }
         }
 

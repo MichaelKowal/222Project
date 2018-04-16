@@ -21,6 +21,7 @@ namespace Completed
         private List<Enemy> enemies;                            //List of all Enemy units, used to issue them move commands.
         private List<Player> robots;                            //list of all the robot units, used to issue commands
         public List<int> counters;                              //list of robots frame counters. They only move once it reaches a  certain number
+        public List<Transform> targets;
         private int enemyCounter = 0;                               //used to delay the enemy movement
         private bool robotsMoving;                              // checks if robots are moving
         private bool enemiesMoving;                             //Boolean to check if enemies are moving.
@@ -148,6 +149,7 @@ namespace Completed
         {
             counters.Add(0);
             robots.Add(script);
+            
         }
 
 
