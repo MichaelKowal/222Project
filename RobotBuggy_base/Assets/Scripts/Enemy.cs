@@ -78,13 +78,6 @@ namespace Completed
         //and takes a generic parameter T which we use to pass in the component we expect to encounter, in this case Player
         protected override void OnCantMove<T>(T component)
         {
-            if(component.CompareTag("Wall"))
-            {
-
-            }
-            //Declare hitPlayer and set it to equal the encountered component.
-            Player hitPlayer = component as Player;
-
             //Set the attack trigger of animator to trigger Enemy attack animation.
             animator.SetTrigger("enemyAttack");
 

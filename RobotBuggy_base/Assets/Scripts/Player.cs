@@ -21,6 +21,8 @@ namespace Completed
         public AudioClip moveSound1;                //1 of 2 Audio clips to play when player moves.
         public AudioClip moveSound2;                //2 of 2 Audio clips to play when player moves.
         public AudioClip gameOverSound;             //Audio clip to play when player dies.
+        public AudioClip eatSound1;
+        public AudioClip eatSound2;
 
         private int food;                           //Used to store player food points total during level.
         public bool isAlive = true;
@@ -87,13 +89,6 @@ namespace Completed
                                                        previousY + directions[i - 1].y, 0f);
                         BoardManager.Instance.AddRobot(position);
                     }
-                }
-                //create new robots for the other directions
-                else
-                {
-                    Vector3 position = new Vector3(previousX + directions[i - 1].x,
-                                                   previousY + directions[i- 1].y, 0f);
-                    BoardManager.Instance.AddRobot(position);
                 }
             }
             directions.Clear();

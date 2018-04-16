@@ -32,12 +32,6 @@ namespace Completed
         //Awake is always called before any Start functions
         void Awake()
         {
-			turnDelayList.Add (0.001f);
-			turnDelayList.Add (0.0002f);
-//			turnDelayList.Add (0.000003f);
-//			turnDelayList.Add (0.001f);
-//			turnDelayList.Add (0.0000004f);
-//			turnDelayList.Add (0.009f);
             //Check if instance already exists
             if (instance == null)
 
