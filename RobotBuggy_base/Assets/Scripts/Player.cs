@@ -20,10 +20,6 @@ namespace Completed
 
         public AudioClip moveSound1;                //1 of 2 Audio clips to play when player moves.
         public AudioClip moveSound2;                //2 of 2 Audio clips to play when player moves.
-        public AudioClip eatSound1;                 //1 of 2 Audio clips to play when player collects a food object.
-        public AudioClip eatSound2;                 //2 of 2 Audio clips to play when player collects a food object.
-        public AudioClip drinkSound1;               //1 of 2 Audio clips to play when player collects a soda object.
-        public AudioClip drinkSound2;               //2 of 2 Audio clips to play when player collects a soda object.
         public AudioClip gameOverSound;             //Audio clip to play when player dies.
 
         private int food;                           //Used to store player food points total during level.
@@ -91,6 +87,13 @@ namespace Completed
                                                        previousY + directions[i - 1].y, 0f);
                         BoardManager.Instance.AddRobot(position);
                     }
+                }
+                //create new robots for the other directions
+                else
+                {
+                    Vector3 position = new Vector3(previousX + directions[i - 1].x,
+                                                   previousY + directions[i- 1].y, 0f);
+                    BoardManager.Instance.AddRobot(position);
                 }
             }
             directions.Clear();
@@ -162,6 +165,11 @@ namespace Completed
               SoundManager.instance.RandomizeSfx (eatSound1, eatSound2);
                 //Disable the food object the Robot collided with.
                 other.gameObject.SetActive(false);
+            }
+
+            if(other.tag == "Driven")
+            {
+
             }
         }
 
