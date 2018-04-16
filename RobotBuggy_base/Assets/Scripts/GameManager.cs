@@ -9,7 +9,7 @@ namespace Completed
     public class GameManager : Singleton<GameManager>
     {
         public float levelStartDelay = 2f;                      //Time to wait before starting level, in seconds.
-        public float turnDelay = 0.1f;                          //Delay between each Player turn.
+        public float turnDelay = 1f;                          //Delay between each Player turn.
         public int playerFoodPoints = 100;                      //Starting value for Player food points.
         public static GameManager instance = null;              //Static instance of GameManager which allows it to be accessed by any other script.
         [HideInInspector] public bool playersTurn = true;       //Boolean to check if it's players turn, hidden in inspector but public.
@@ -19,14 +19,14 @@ namespace Completed
         public BoardManager boardScript;                       //Store a reference to our BoardManager which will set up the level.
         private int level = 1;                                  //Current level number, expressed in game as "Day 1".
         private List<Enemy> enemies;                            //List of all Enemy units, used to issue them move commands.
-        private List<Player> robots;                            //list of all the robot units, used to issue commands
+        private Queue<Player> robots;                            //list of all the robot units, used to issue commands
         public List<int> counters;                              //list of robots frame counters. They only move once it reaches a  certain number
         private int enemyCounter = 0;                               //used to delay the enemy movement
         private bool robotsMoving;                              // checks if robots are moving
         private bool enemiesMoving;                             //Boolean to check if enemies are moving.
         private bool doingSetup = true;                         //Boolean to check if we're setting up board, prevent Player from moving during setup.
-
-
+        private int counter = -100;
+        private int robotCount = 0;
 
         //Awake is always called before any Start functions
         void Awake()
@@ -48,7 +48,7 @@ namespace Completed
 
             //Assign enemies to a new List of Enemy objects.
             enemies = new List<Enemy>();
-            robots = new List<Player>();
+            robots = new Queue<Player>();
             //Get a component reference to the attached BoardManager script
             boardScript = GetComponent<BoardManager>();
 
@@ -57,9 +57,9 @@ namespace Completed
         }
 
 
-        //this is called only once, and the paramter tell it to be called only after the scene was loaded
-        //(otherwise, our Scene Load callback would be called the very first load, and we don't want that)
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+		//this is called only once, and the paramter tell it to be called only after the scene was loaded
+		//(otherwise, our Scene Load callback would be called the very first load, and we don't want that)
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         static public void CallbackInitialization()
         {
             //register the callback to be called everytime the scene is loaded
@@ -117,15 +117,19 @@ namespace Completed
         //Update is called every frame.
         void Update()
         {
-           
-            if (Input.GetButtonDown("Jump"))
+            counter++;
+            if(counter == 20)
             {
-                GameManager.instance.boardScript.AddRobot(new Vector3(0f, 0f, 0f));
+                counter = 0;
+                Player currentRobot = robots.Dequeue();
+                currentRobot.MoveRobot();
+                if(currentRobot.isAlive) robots.Enqueue(currentRobot);
             }
-
             //robots start moving only if it is their turn
-            if(playersTurn && !enemiesMoving && !robotsMoving && !doingSetup)
-                StartCoroutine(MoveRobots());
+            if (playersTurn && !enemiesMoving && !robotsMoving && !doingSetup)
+            {
+                
+            }
 
             //Check that playersTurn or enemiesMoving or doingSetup are not currently true.
             if (playersTurn || enemiesMoving ||robotsMoving|| doingSetup)
@@ -147,7 +151,8 @@ namespace Completed
         public void AddRobotToList(Player script)
         {
             counters.Add(0);
-            robots.Add(script);
+            robotCount++;
+            robots.Enqueue(script);
         }
 
 
@@ -212,14 +217,17 @@ namespace Completed
 
 
             //Loop through List of robot objects.
-            for (int i = 0; i < robots.Count; i++)
+            for (int i = 0; i < robotCount; i++)
             {
                 counters[i]++;
                 if (counters[i] == 5)
                 {
                     counters[i] = 0;
                     //Call the MoveRobot function of Robot at index i in the robots List.
-                    robots[i].MoveRobot();
+                    Player currentRobot = robots.Dequeue();
+                    currentRobot.MoveRobot();
+
+                    robots.Enqueue(currentRobot);
                 }
                 //Wait for Enemy's moveTime before moving next Enemy, 
                 //yield return new WaitForSeconds(enemies[i].moveTime);
