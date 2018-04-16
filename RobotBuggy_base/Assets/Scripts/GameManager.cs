@@ -139,7 +139,7 @@ namespace Completed
                 return;
 
             //Start moving enemies.
-            StartCoroutine(MoveEnemies());
+            //StartCoroutine(MoveEnemies());
         }
 
         //Call this to add the passed in Enemy to the List of Enemy objects.
@@ -170,6 +170,7 @@ namespace Completed
             enabled = false;
         }
 
+        /*
         //Coroutine to move enemies in sequence.
         IEnumerator MoveEnemies()
         {
@@ -207,6 +208,7 @@ namespace Completed
             //Enemies are done moving, set enemiesMoving to false.
             enemiesMoving = false;
         }
+        */
 
         IEnumerator MoveRobots()
         {

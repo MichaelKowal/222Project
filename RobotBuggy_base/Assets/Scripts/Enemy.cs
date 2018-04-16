@@ -37,8 +37,38 @@ namespace Completed
 
         public void Update()
         {
-            target = GameObject.FindGameObjectWithTag("Player").transform;
+            int horizontal = 0;
+            int vertical = 0;
+
+            if (Input.GetAxisRaw("Horizontal") < 0)
+                horizontal = -1;
+
+            if (Input.GetAxisRaw("Horizontal") > 0)
+                horizontal = 1;
+
+            if (Input.GetAxisRaw("Vertical") < 0)
+                vertical = -1;
+
+            if (Input.GetAxisRaw("Vertical") > 0)
+                vertical = 1;
+
+            if (Input.GetButtonDown("Jump"))
+                horizontal = 1;
+            
+
+            if(horizontal != 0)
+            {
+                vertical = 0;
+            }
+
+            if (horizontal != 0 || vertical != 0)
+                {
+                    //Call AttemptMove passing in the generic parameter Wall, since that is what Player may interact with if they encounter one (by attacking it)
+                    //Pass in horizontal and vertical as parameters to specify the direction to move Player in.
+                    AttemptMove<Wall>(horizontal, vertical);
+                }
         }
+        
 
 
         //Override the AttemptMove function of MovingObject to include functionality needed for Enemy to skip turns.
@@ -47,12 +77,14 @@ namespace Completed
         {
             //Call the AttemptMove function from MovingObject.
             base.AttemptMove<T>(xDir, yDir, 0);
+           
         }
 
-
+        
         //MoveEnemy is called by the GameManger each turn to tell each Enemy to try to move towards the player.
         public void MoveEnemy()
         {
+            /*
             //Declare variables for X and Y axis move directions, these range from -1 to 1.
             //These values allow us to choose between the cardinal directions: up, down, left and right.
             int xDir = 0;
@@ -71,9 +103,10 @@ namespace Completed
 
             //Call the AttemptMove function and pass in the generic parameter Player, because Enemy is moving and expecting to potentially encounter a Player
             AttemptMove<Player>(xDir, yDir);
+            */
         }
 
-
+    
         //OnCantMove is called if Enemy attempts to move into a space occupied by a Player, it overrides the OnCantMove function of MovingObject 
         //and takes a generic parameter T which we use to pass in the component we expect to encounter, in this case Player
         protected override void OnCantMove<T>(T component)
@@ -87,3 +120,4 @@ namespace Completed
     }
 
 }
+

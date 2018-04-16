@@ -45,7 +45,6 @@ namespace Completed
 
             //Cast a line from start point to end point checking collision on blockingLayer.
             hit = Physics2D.Linecast(start, end, blockingLayer);
-            //hit2 = Physics2D.Linecast(start, end, drivenLayer);
 
             //Re-enable boxCollider after linecast
             boxCollider.enabled = true;

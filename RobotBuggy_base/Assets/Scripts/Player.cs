@@ -55,7 +55,7 @@ namespace Completed
             //create a robot for each of the directions available
             float previousX = gameObject.transform.position.x;
             float previousY = gameObject.transform.position.y;
-            Debug.Log(directions.Count);
+            //Debug.Log(directions.Count);
             if (directions.Count == 0)
             {
                 isAlive = false;
@@ -162,11 +162,6 @@ namespace Completed
               SoundManager.instance.RandomizeSfx (eatSound1, eatSound2);
                 //Disable the food object the Robot collided with.
                 other.gameObject.SetActive(false);
-            }
-
-            if(other.tag == "Driven")
-            {
-
             }
         }
 
