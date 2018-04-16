@@ -67,10 +67,12 @@ namespace Completed
                 {
                     //used to make things more clear
                     Directions current = directions[i];
+
                     //move the active robit to the first available direction
                     if (i == 0)
                     {
                         AttemptMove<Wall>(current.x, current.y);
+
                         //create a tile in the spot the robot was just in
                         GameObject toInstantiate =
                             BoardManager.Instance.visitedTiles
@@ -85,8 +87,8 @@ namespace Completed
                     //create new robots for the other directions
                     else
                     {
-                        Vector3 position = new Vector3(previousX + directions[i - 1].x,
-                                                       previousY + directions[i - 1].y, 0f);
+                        Vector3 position = new Vector3(previousX + directions[i].x,
+                                                       previousY + directions[i].y, 0f);
                         BoardManager.Instance.AddRobot(position);
                     }
                 }
@@ -205,22 +207,22 @@ namespace Completed
             //check each direction for a free path. Add any free paths to the directions array
 
             //up
-            if (Move(0, 1, out hit))
+            if (lookForMove(0, 1, out hit))
             {
                 directions.Add(new Directions(0, 1));
             }
             //right
-            if (Move(1, 0, out hit))
+            if (lookForMove(1, 0, out hit))
             {
                 directions.Add(new Directions(1, 0));
             }
             //down
-            if (Move(-1, 0, out hit))
+            if (lookForMove(-1, 0, out hit))
             {
                 directions.Add(new Directions(-1, 0));
             }
             //left
-            if (Move(0, -1, out hit))
+            if (lookForMove(0, -1, out hit))
             {
                 directions.Add(new Directions(0, -1));
             }

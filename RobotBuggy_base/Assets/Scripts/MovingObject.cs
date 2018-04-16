@@ -66,6 +66,37 @@ namespace Completed
             return false;
         }
 
+        protected bool lookForMove(int xDir, int yDir, out RaycastHit2D hit)
+        {
+            //Store start position to move from, based on objects current transform position.
+            Vector2 start = transform.position;
+
+            // Calculate end position based on the direction parameters passed in when calling Move.
+            Vector2 end = start + new Vector2(xDir, yDir);
+
+            //Disable the boxCollider so that linecast doesn't hit this object's own collider.
+            boxCollider.enabled = false;
+
+            //Cast a line from start point to end point checking collision on blockingLayer.
+            hit = Physics2D.Linecast(start, end, blockingLayer);
+            //hit2 = Physics2D.Linecast(start, end, drivenLayer);
+
+            //Re-enable boxCollider after linecast
+            boxCollider.enabled = true;
+
+            //Check if a wall or visited tile was hit
+            if (hit.transform == null)
+            {
+                //Return true to say that Move is allowed
+                return true;
+            }
+
+
+
+            //If something was hit, return false, Move is not allowed.
+            return false;
+        }
+
 
         //Co-routine for moving units from one space to next, takes a parameter end to specify where to move to.
         protected IEnumerator SmoothMovement(Vector3 end)
