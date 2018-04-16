@@ -51,6 +51,7 @@ namespace Completed
 		{
             levelToLoad = LevelManager.Instance.levelToLoad;
 		}
+
 		//Clears our list gridPositions and prepares it to generate a new board.
 		void InitialiseList()
         {
@@ -75,13 +76,13 @@ namespace Completed
             keyPositions.Clear();
 
             keyPositions.Add(new Vector3(2, 0, 0f));
-            //keyPositions.Add(new Vector3(1, 2, 0f));
-            //keyPositions.Add(new Vector3(0, 13, 0f));
-            //keyPositions.Add(new Vector3(6, 8, 0f));
-            //keyPositions.Add(new Vector3(10, 2, 0f));
-            //keyPositions.Add(new Vector3(12, 8, 0f));
-            //keyPositions.Add(new Vector3(14, 0, 0f));
-            //keyPositions.Add(new Vector3(15, 12, 0f));
+            keyPositions.Add(new Vector3(1, 2, 0f));
+            keyPositions.Add(new Vector3(0, 13, 0f));
+            keyPositions.Add(new Vector3(6, 8, 0f));
+            keyPositions.Add(new Vector3(10, 2, 0f));
+            keyPositions.Add(new Vector3(12, 8, 0f));
+            keyPositions.Add(new Vector3(14, 0, 0f));
+            keyPositions.Add(new Vector3(15, 12, 0f));
 
         }
 
@@ -1093,24 +1094,24 @@ namespace Completed
 
             //Instantiate a random number of wall tiles based on minimum and maximum, at randomized positions.
             //This is the call that needs to change to another method that generates the maze.
-            /*if(levelToLoad == 1)
+            if(LevelManager.Instance.levelToLoad == 1)
             {
                 //Call if you want many small loops
                 LayoutTileIndexManyLoops(wallTiles);
             }
-            else if(levelToLoad == 2)
+            else if(LevelManager.Instance.levelToLoad == 2)
             {
                 //Call if you want one large loop in the maze
                 LayoutTileIndexOneLargeLoop (wallTiles); 
             }
-            else if(levelToLoad == 3)
+            else if(LevelManager.Instance.levelToLoad == 3)
             {
                 // Call if you want no loops
                 LayoutTileIndexNoLoops(wallTiles);
-            }*/
+            }
 
             //Call if you want many small loops
-            LayoutTileIndexManyLoops(wallTiles);
+            //LayoutTileIndexManyLoops(wallTiles);
 
             //Instantiate a random number of food tiles based on minimum and maximum, at randomized positions.
             PlaceKey(foodTiles);

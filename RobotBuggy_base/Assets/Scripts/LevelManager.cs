@@ -5,7 +5,7 @@ namespace Completed
 {
     public class LevelManager : Singleton<LevelManager>
     {
-        public int levelToLoad = 1;
+        public int levelToLoad = 3;
         public void LoadLevel1(string name)
         {
             levelToLoad = 1;

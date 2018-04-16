@@ -186,6 +186,7 @@ namespace Completed
         {
             //Set the trigger for the player animator to transition to the playerHit animation.
             animator.SetTrigger("killed");
+            SoundManager.instance.PlaySingle(gameOverSound);
 
             //Check to see if game has ended.
             CheckIfGameOver();
