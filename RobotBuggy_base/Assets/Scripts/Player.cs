@@ -27,12 +27,12 @@ namespace Completed
         public AudioClip gameOverSound;             //Audio clip to play when player dies.
 
         private int food;                           //Used to store player food points total during level.
-
+        public bool isAlive = true;
         private Animator animator;                  //Used to store a reference to the Robot's animator component.
         private bool stuck = false;
         private List<Directions> directions = new List<Directions>();
         private Vector2 previosTile;
-        private int counter = -100;
+
 
         protected override void Start()
         {
@@ -44,8 +44,7 @@ namespace Completed
             base.Start();
         }
 
-
-        private void OnDisable()
+		private void OnDisable()
         {
             //When Player object is disabled, store the current local food total in the GameManager so it can be re-loaded in next level.
             GameManager.instance.playerFoodPoints = food;
@@ -53,36 +52,45 @@ namespace Completed
 
         public void MoveRobot()
         {
+            
             FindDirections();
             //create a robot for each of the directions available
             float previousX = gameObject.transform.position.x;
             float previousY = gameObject.transform.position.y;
-            for (int i = 0; i < directions.Count; i++)
+            Debug.Log(directions.Count);
+            if (directions.Count == 0)
             {
-                //used to make things more clear
-                Directions current = directions[i];
-                //move the active robit to the first available direction
-                if (i == 0)
+                isAlive = false;
+                Dead();
+            }
+            else
+            {
+                for (int i = 0; i < directions.Count; i++)
                 {
-                    AttemptMove<Wall>(current.x, current.y);
-                    //create a tile in the spot the robot was just in
-                    GameObject toInstantiate =
-                        BoardManager.Instance.visitedTiles
-                                    [Random.Range(0, BoardManager.Instance.visitedTiles.Length)];
-                    GameObject instance =
-                        Instantiate(toInstantiate,
-                                    new Vector3(gameObject.transform.position.x,
-                                                gameObject.transform.position.y, 0f),
-                                    Quaternion.identity) as GameObject;
-                    Debug.Log(current.x + ", " + current.y);
+                    //used to make things more clear
+                    Directions current = directions[i];
+                    //move the active robit to the first available direction
+                    if (i == 0)
+                    {
+                        AttemptMove<Wall>(current.x, current.y);
+                        //create a tile in the spot the robot was just in
+                        GameObject toInstantiate =
+                            BoardManager.Instance.visitedTiles
+                                        [Random.Range(0, BoardManager.Instance.visitedTiles.Length)];
+                        GameObject instance =
+                            Instantiate(toInstantiate,
+                                        new Vector3(gameObject.transform.position.x,
+                                                    gameObject.transform.position.y, 0f),
+                                        Quaternion.identity) as GameObject;
 
-                }
-                //create new robots for the other directions
-                else
-                {
-                    Vector3 position = new Vector3(previousX + directions[i - 1].x,
-                                                   previousY + directions[i- 1].y, 0f);
-                    BoardManager.Instance.AddRobot(position);
+                    }
+                    //create new robots for the other directions
+                    else
+                    {
+                        Vector3 position = new Vector3(previousX + directions[i - 1].x,
+                                                       previousY + directions[i - 1].y, 0f);
+                        BoardManager.Instance.AddRobot(position);
+                    }
                 }
             }
             directions.Clear();
@@ -169,10 +177,10 @@ namespace Completed
 
         //LoseFood is called when an enemy attacks the Robot.
         //It takes a parameter loss which specifies how many points to lose.
-        public void LoseFood()
+        public void Dead()
         {
             //Set the trigger for the player animator to transition to the playerHit animation.
-            animator.SetTrigger("PlayerKilled");
+            animator.SetTrigger("killed");
 
             //Check to see if game has ended.
             CheckIfGameOver();
