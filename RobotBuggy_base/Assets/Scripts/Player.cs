@@ -13,7 +13,7 @@ namespace Completed
         public int pointsPerFood = 10;              //Number of points to add to Robot food points when picking up a food object.
         public int pointsPerSoda = 20;              //Number of points to add to Robot food points when picking up a soda object.
         public int wallDamage = 1;                  //How much damage a Robot does to a wall when chopping it.
-        public bool hasKey = false;
+//        public bool hasKey = false;
 
         public Text foodText;                       //UI Text to display current player food total.
 		public Text keyText;
@@ -139,13 +139,14 @@ namespace Completed
         private void OnTriggerEnter2D(Collider2D other)
         {
             //Check if the tag of the trigger collided with is Exit.
-            if (other.tag == "Exit" && hasKey)
+			if (other.tag == "Exit" && GameManager.instance.hasKey)
             {
 
                 SoundManager.instance.RandomizeSfx(eatSound1, eatSound2);
 
                 //Invoke the Restart function to start the next level with a delay of restartLevelDelay (default 1 second).
-                Invoke("Restart", restartLevelDelay);
+                //Invoke("Restart", restartLevelDelay);
+
 
                 //Disable the Robot object since level is over.
                 enabled = false;
@@ -154,7 +155,7 @@ namespace Completed
             //Check if the tag of the trigger collided with is Food.
             else if (other.tag == "Food")
             {
-                hasKey = true;
+				GameManager.instance.hasKey = true;
                 //Update foodText to represent current total and notify player that they gained points
                 //foodText.text = "+" + pointsPerFood + " Food: " + food;
                 foodText.text = "You got the Key!";

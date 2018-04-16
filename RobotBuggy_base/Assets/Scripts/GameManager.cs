@@ -28,6 +28,7 @@ namespace Completed
         private bool doingSetup = true;                         //Boolean to check if we're setting up board, prevent Player from moving during setup.
         private int counter = -100;
         private int robotCount = 0;
+		public bool hasKey = false;
 
         //Awake is always called before any Start functions
         void Awake()
@@ -87,7 +88,7 @@ namespace Completed
             levelText = GameObject.Find("LevelText").GetComponent<Text>();
 
             //Set the text of levelText to the string "Day" and append the current level number.
-            levelText.text = "Can they make it?";
+            levelText.text = "";
 
             //Set levelImage to active blocking player's view of the game board during setup.
             levelImage.SetActive(true);
