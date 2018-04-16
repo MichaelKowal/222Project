@@ -14,6 +14,8 @@ namespace Completed
         public static GameManager instance = null;              //Static instance of GameManager which allows it to be accessed by any other script.
         [HideInInspector] public bool playersTurn = true;       //Boolean to check if it's players turn, hidden in inspector but public.
 
+        private Text currentRobots;
+        private Text totalRobots;
         private Text levelText;                                 //Text to display current level number.
         private GameObject levelImage;                          //Image to block out level as levels are being set up, background for levelText.
         public BoardManager boardScript;                       //Store a reference to our BoardManager which will set up the level.
@@ -29,6 +31,7 @@ namespace Completed
         private int counter = -100;
         private int robotCount = 0;
 		public bool hasKey = false;
+        private int activeCount = 0;
 
         //Awake is always called before any Start functions
         void Awake()
@@ -87,6 +90,10 @@ namespace Completed
             //Get a reference to our text LevelText's text component by finding it by name and calling GetComponent.
             levelText = GameObject.Find("LevelText").GetComponent<Text>();
 
+            currentRobots = GameObject.Find("Current").GetComponent<Text>();
+
+            totalRobots = GameObject.Find("Totals").GetComponent<Text>();
+
             //Set the text of levelText to the string "Day" and append the current level number.
             levelText.text = "";
 
@@ -102,9 +109,7 @@ namespace Completed
 
             //Call the SetupScene function of the BoardManager script, pass it current level number.
             boardScript.SetupScene(level);
-
         }
-
 
         //Hides black image used between levels
         void HideLevelImage()
@@ -119,13 +124,17 @@ namespace Completed
         //Update is called every frame.
         void Update()
         {
+
+            currentRobots.text = "Current Robots: " + activeCount;
+            totalRobots.text = "Total Robots: " + robotCount;
             counter++;
             if(counter == 20)
             {
                 counter = 0;
                 Player currentRobot = robots.Dequeue();
                 currentRobot.MoveRobot();
-                if(currentRobot.isAlive) robots.Enqueue(currentRobot);
+                if (currentRobot.isAlive) robots.Enqueue(currentRobot);
+                else activeCount--;
             }
             //robots start moving only if it is their turn
             if (playersTurn && !enemiesMoving && !robotsMoving && !doingSetup)
@@ -154,6 +163,7 @@ namespace Completed
         {
             counters.Add(0);
             robotCount++;
+            activeCount++;
             robots.Enqueue(script);
         }
 
