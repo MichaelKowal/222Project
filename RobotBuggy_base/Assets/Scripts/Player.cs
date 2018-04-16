@@ -55,7 +55,6 @@ namespace Completed
             //create a robot for each of the directions available
             float previousX = gameObject.transform.position.x;
             float previousY = gameObject.transform.position.y;
-            Debug.Log(directions.Count);
             if (directions.Count == 0)
             {
                 isAlive = false;

@@ -181,8 +181,6 @@ namespace Completed
             }
         }
 
-
-
         //The abstract modifier indicates that the thing being modified has a missing or incomplete implementation.
         //OnCantMove will be overriden by functions in the inheriting classes.
         protected abstract void OnCantMove<T>(T component)
