@@ -10,6 +10,7 @@ namespace Completed
     {
         public float levelStartDelay = 2f;                      //Time to wait before starting level, in seconds.
         public float turnDelay = 0.1f;                          //Delay between each Player turn.
+		public List<float> turnDelayList = new List<float>();
         public int playerFoodPoints = 100;                      //Starting value for Player food points.
         public static GameManager instance = null;              //Static instance of GameManager which allows it to be accessed by any other script.
         [HideInInspector] public bool playersTurn = true;       //Boolean to check if it's players turn, hidden in inspector but public.
@@ -31,6 +32,12 @@ namespace Completed
         //Awake is always called before any Start functions
         void Awake()
         {
+			turnDelayList.Add (0.001f);
+			turnDelayList.Add (0.0002f);
+//			turnDelayList.Add (0.000003f);
+//			turnDelayList.Add (0.001f);
+//			turnDelayList.Add (0.0000004f);
+//			turnDelayList.Add (0.009f);
             //Check if instance already exists
             if (instance == null)
 
@@ -171,13 +178,14 @@ namespace Completed
             enemiesMoving = true;
 
             //Wait for turnDelay seconds, defaults to .1 (100 ms).
-            yield return new WaitForSeconds(turnDelay);
+			//float randomDelay = Random.Range(0, turnDelayList.Count);
+			yield return new WaitForSecondsRealtime(turnDelay);
 
             //If there are no enemies spawned (IE in first level):
             if (enemies.Count == 0)
             {
                 //Wait for turnDelay seconds between moves, replaces delay caused by enemies moving when there are none.
-                yield return new WaitForSeconds(turnDelay);
+				yield return new WaitForSecondsRealtime(turnDelay);
             }
 
             //Loop through List of Enemy objects.
@@ -192,7 +200,7 @@ namespace Completed
                 }
 
                 //Wait for Enemy's moveTime before moving next Enemy, 
-                yield return new WaitForSeconds(enemies[i].moveTime);
+                yield return new WaitForSecondsRealtime(enemies[i].moveTime);
             }
             //Once Enemies are done moving, set playersTurn to true so player can move.
             playersTurn = true;
@@ -207,7 +215,9 @@ namespace Completed
             robotsMoving = true;
 
             //Wait for turnDelay seconds, defaults to .1 (100 ms).
-            yield return new WaitForSeconds(turnDelay);
+			//float randomDelay = Random.Range(0, turnDelayList.Count);
+
+			yield return new WaitForSecondsRealtime(turnDelay);
 
 
 
