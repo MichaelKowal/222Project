@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Completed
 {
@@ -13,6 +14,12 @@ namespace Completed
             Debug.Log("New Level load: " + name);
 
             Application.LoadLevel(name);
+
+            Enemy[] enemies = FindObjectsOfType<Enemy>();
+            foreach(Enemy enemy in enemies)
+            {
+                enemy.gameObject.SetActive(false);
+            }
         }
 
         public void LoadLevel2(string name)

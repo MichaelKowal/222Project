@@ -136,20 +136,6 @@ namespace Completed
                 if (currentRobot.isAlive) robots.Enqueue(currentRobot);
                 else activeCount--;
             }
-            //robots start moving only if it is their turn
-            if (playersTurn && !enemiesMoving && !robotsMoving && !doingSetup)
-            {
-                
-            }
-
-            //Check that playersTurn or enemiesMoving or doingSetup are not currently true.
-            if (playersTurn || enemiesMoving ||robotsMoving|| doingSetup)
-
-                //If any of these are true, return and do not start MoveEnemies.
-                return;
-
-            //Start moving enemies.
-            StartCoroutine(MoveEnemies());
         }
 
         //Call this to add the passed in Enemy to the List of Enemy objects.
@@ -181,43 +167,7 @@ namespace Completed
             enabled = false;
         }
 
-        //Coroutine to move enemies in sequence.
-        IEnumerator MoveEnemies()
-        {
-            //While enemiesMoving is true player is unable to move.
-            enemiesMoving = true;
 
-            //Wait for turnDelay seconds, defaults to .1 (100 ms).
-			//float randomDelay = Random.Range(0, turnDelayList.Count);
-			yield return new WaitForSecondsRealtime(turnDelay);
-
-            //If there are no enemies spawned (IE in first level):
-            if (enemies.Count == 0)
-            {
-                //Wait for turnDelay seconds between moves, replaces delay caused by enemies moving when there are none.
-				yield return new WaitForSecondsRealtime(turnDelay);
-            }
-
-            //Loop through List of Enemy objects.
-            for (int i = 0; i < enemies.Count; i++)
-            {
-                enemyCounter++;
-                if (enemyCounter == 5)
-                {
-                    enemyCounter = 0;
-                    //Call the MoveEnemy function of Enemy at index i in the enemies List.
-                    enemies[i].MoveEnemy();
-                }
-
-                //Wait for Enemy's moveTime before moving next Enemy, 
-                yield return new WaitForSecondsRealtime(enemies[i].moveTime);
-            }
-            //Once Enemies are done moving, set playersTurn to true so player can move.
-            playersTurn = true;
-
-            //Enemies are done moving, set enemiesMoving to false.
-            enemiesMoving = false;
-        }
 
         IEnumerator MoveRobots()
         {
