@@ -19,4 +19,8 @@ The simulation performs the following behaviour:
 
 This simulation was made using the Unity Game Engine. The threads are simulated with small robots. All animations and pixel art was custom made for the simultation.
 
+![Alt Text](https://github.com/MichaelKowal/222Project/blob/master/robo-buggy-screenshots_0001_Screen%20Shot%202019-03-03%20at%202.34.12%20PM.png.jpg)
 
+![Alt Text](https://github.com/MichaelKowal/222Project/blob/master/robo-buggy-screenshots_0002_Screen%20Shot%202019-03-03%20at%202.34.46%20PM.png.jpg)
+
+![Alt Text](https://github.com/MichaelKowal/222Project/blob/master/robo-buggy-screenshots_0003_Screen%20Shot%202019-03-03%20at%202.35.08%20PM.png.jpg)
